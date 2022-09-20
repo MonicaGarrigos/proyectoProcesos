@@ -1,16 +1,38 @@
 function Juego(){
-    this.partidas=[];  //Con un array asociativo podría forzar que no se repita el nombre, de momento se queda normal
-    this.agregarPartida= function(nombre){
-        this.partidas.push(new Partida(nombre))
+    this.partidas={};  
+    this.usuarios={}; //array asociativo (diccionario clave/valor)
+
+    this.agregarUsuario=function(nick){
+        if(!this.usuarios[nick]){
+            this.usuarios[nick]= new Usuario(nick,this); //al crear el usuario le paso el juego
+        }
     }
-    this.eliminarPartida = function(nombre){
-        //TO DO
+
+    this.eliminarUsuario=function(nick){
+        delete this.usuarios[nick];
     }
-    this
+
+    this.crearPartida=function(nick){
+        //obtener codigo
+        //crear partida con propietario nick
+        //devolver codigo
+        console.log("partida creada");
+
+    }
+
 
 }
 
-function Partida(nombre){
-    this.nombre=nombre;
+function Usuario(nick,juego){
+    this.nick=nick;
+    this.juego=juego;
+    this.crearPartida=function(){   //delego en juego
+        this.juego.crearPartida(nick)
+    }
+
+}
+
+function Partida(codigo){
+    this.codigo=codigo;
 
 }
