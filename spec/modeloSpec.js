@@ -25,13 +25,16 @@ describe("El juego...", function() {
     
     let codigo= usr1.crearPartida();
     expect(miJuego.partidas[codigo]).toBeDefined();
+    
     let partida=miJuego.partidas[codigo];
     expect(partida.owner).toEqual(usr1.nick);
     expect(partida.jugadores[0]).toEqual(usr1.nick);
     expect(partida.codigo).toEqual(codigo);
+
     usr2.unirseApartida(codigo);
     expect(partida.jugadores.length).toEqual(2);
-    usr3.unirseApartida(codigo);
+
+    usr3.unirseApartida(codigo);                //Comprobar que al meter un tercer jugador no se introduce
     expect(partida.jugadores.length).toEqual(2);
   })
 });
