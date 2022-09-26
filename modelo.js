@@ -19,8 +19,6 @@ function Juego(){
         console.log("partida creada");
 
     }
-
-
 }
 
 function Usuario(nick,juego){
