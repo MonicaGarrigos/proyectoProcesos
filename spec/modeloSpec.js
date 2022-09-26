@@ -1,4 +1,4 @@
-describe("El juuego...", function() {
+describe("El juego...", function() {
   var miJuego;
   
 
@@ -6,8 +6,10 @@ describe("El juuego...", function() {
     miJuego=new Juego();
     miJuego.agregarUsuario("pepe");
     miJuego.agregarUsuario("luis");
+    miJuego.agregarUsuario("zacarias");
     usr1=miJuego.usuarios["pepe"];
     usr2=miJuego.usuarios["luis"];
+    usr3=miJuego.usuarios["zacarias"];
     
     
   });
@@ -21,20 +23,15 @@ describe("El juuego...", function() {
   });
   it("creacion de partida", function(){
     
-    let codigo1=usr1.crearPartida();
-    let listaPartidas= miJuego.obtenerPartidas()
+    let codigo= usr1.crearPartida();
     expect(miJuego.partidas[codigo]).toBeDefined();
-    expect(listaPartidas.length).toEqual(1);
-
-    usr2.crearPartida();
-    listaPartidas= miJuego.obtenerPartidas()
-    expect(listaPartidas.length).toEqual(2);
-
-    //let dueño= partida1.owner;
-    //expect(dueño).toEqual("pepe");
-
-    let partida=miJuego.partidas[codigo1]
-    
-
+    let partida=miJuego.partidas[codigo];
+    expect(partida.owner).toEqual(usr1.nick);
+    expect(partida.jugadores[0]).toEqual(usr1.nick);
+    expect(partida.codigo).toEqual(codigo);
+    usr2.unirseApartida(codigo);
+    expect(partida.jugadores.length).toEqual(2);
+    usr3.unirseApartida(codigo);
+    expect(partida.jugadores.length).toEqual(2);
   })
 });
