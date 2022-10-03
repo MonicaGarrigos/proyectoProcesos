@@ -3,9 +3,13 @@ function Juego(){
     this.usuarios={}; //array asociativo (diccionario clave/valor)
 
     this.agregarUsuario=function(nick){
+        let res={nick:-1};
         if(!this.usuarios[nick]){
             this.usuarios[nick]= new Usuario(nick,this); //al crear el usuario le paso el juego
+            res={nick:nick};
+			console.log("Nuevo usuario: "+nick);
         }
+        return res;
     }
 
     this.eliminarUsuario=function(nick){

@@ -20,10 +20,10 @@ function Juego(){
         
         let res = {codigo:-1}
         let usr  = this.usuarios[nick]
-        let codigo;
+         
 
         if(usr){
-            codigo=usr.crearPartida();
+            let codigo=usr.crearPartida();
             res = {codigo:codigo};
         }
         return res;
@@ -40,26 +40,28 @@ function Juego(){
 
     }
     this.jugadorSeUneAPartida=function(codigo,nick){
-        let res = {codigo:-1}
+        let res = {"codigo":-1}
         let usr = this.usuarios[nick]
         
 
         if(usr){
-            usr.unirseApartida(codigo);
+            let valor=usr.unirseApartida(codigo);
             console.log("El usuario " + nick + " se ha unido a la partida " + codigo);
-            res = {codigo:nick};
+            res = {"codigo":valor};
         }
 
         return res;
 
     }
     this.unirApartida=function(codigo,jugador){
+        let res=-1;
         if (this.partidas[codigo]){//si existe o no
-           this.partidas[codigo].agregarJugador(jugador); 
+           res=this.partidas[codigo].agregarJugador(jugador); 
         }
         else{
-            console.log("Partida no existe")
+            console.log("Partida no existe");
         }
+        return res;
     }
     this.obtenerPartidas=function(){
         let lista=[];
@@ -85,11 +87,11 @@ function Usuario(nick,juego){
     this.nick=nick;
     this.juego=juego;
     this.crearPartida=function(){   //delego en juego
-        return this.juego.crearPartida(this)
+        return this.juego.crearPartida(this);
     }
 
     this.unirseApartida=function(codigo){
-        this.juego.unirApartida(codigo,this);
+        return this.juego.unirApartida(codigo,this);
     }
 
 }
@@ -105,6 +107,7 @@ function Partida(codigo,jugador){
         let res=this.codigo;
         if(this.hayHueco){
             this.jugadores.push(jugador);
+            this.comprobarFase();
             
         }
         else {

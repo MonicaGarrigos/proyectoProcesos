@@ -1,5 +1,3 @@
-
-'use strict';
 const fs = require('fs');
 //const fs = require('express');
 const express = require('express');
