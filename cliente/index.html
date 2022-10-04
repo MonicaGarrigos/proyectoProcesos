@@ -3,11 +3,16 @@
 <head>
         <meta charset0 "utf-8">
         <title>Probar el modelo</title>
-        <script></script>
+        
+        <!--Las dependencias tienen que estar cargadas en orden, si una usa otra debe ir antes-->
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" 
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script src="./cliente/clienteRest.js"></script>
 </head>
 <body>
         <p>probar el modelo</p>
         <script>
+                rest= new ClienteRest(); //aqui lleva mayuscula al ser la funcion dentro del archivo(que la he definido con mayuscula)
         </script>
 </body>
 </html>

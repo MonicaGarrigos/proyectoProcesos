@@ -3,10 +3,10 @@ function Juego(){
     this.usuarios={}; //array asociativo (diccionario clave/valor)
 
     this.agregarUsuario=function(nick){
-        let res={nick:-1};
+        let res={"nick":-1};
         if(!this.usuarios[nick]){
             this.usuarios[nick]= new Usuario(nick,this); //al crear el usuario le paso el juego
-            res={nick:nick};
+            res={"nick":nick};
             console.log("Nuevo usuario: "+ nick);
         }
         return res;
@@ -46,7 +46,7 @@ function Juego(){
 
         if(usr){
             let valor=usr.unirseApartida(codigo);
-            console.log("El usuario " + nick + " se ha unido a la partida " + codigo);
+            
             res = {"codigo":valor};
         }
 
@@ -105,7 +105,8 @@ function Partida(codigo,jugador){
     
     this.agregarJugador= function(jugador){  //modificado para que se agregue el jugador entero no solo el nick
         let res=this.codigo;
-        if(this.hayHueco){
+        if(this.hayHueco()){
+            console.log("El usuario" + jugador.nick+" se ha unido a la partida " + this.codigo);
             this.jugadores.push(jugador);
             this.comprobarFase();
             

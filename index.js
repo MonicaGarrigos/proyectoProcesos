@@ -1,7 +1,5 @@
 const fs = require('fs');
-//const fs = require('express');
 const express = require('express');
-//const uuid = require('uuid/v4');
 const app = express();
 const PORT = process.env.PORT || 3001;
 const modelo = require ("./servidor/modelo.js");
@@ -32,7 +30,7 @@ app.get("/crearPartida/:nick",function(request,response){
   if(usr){
     codigo=usr.crearPartida();
     res = {codigo:codigo};
-  }*/  //Hecho asi al principio por poner la logica aqui que no deberia
+  }*/  //Hecho asi al principio por poner la logica aqui, que no deberia
 
   response.send(res);
 });
