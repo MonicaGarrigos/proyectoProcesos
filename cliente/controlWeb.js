@@ -38,8 +38,8 @@ function ControlWeb() {
         $("#mH").remove();
         
         var cadena = '<div class="row" id="mH">';
-        cadena = cadena + '<div class="row"><h2>El juego indefinido</h2></div>';
-        cadena = cadena + "<p> Bienvenido " + rest.nick + "</p>"
+        cadena = cadena + '<div class="row col-12" ><h2>El juego indefinido</h2></div>';
+        cadena = cadena + "<div><p> Bienvenido " + rest.nick + "</p></div>"
         cadena = cadena + '</div>'
 
         
@@ -50,12 +50,34 @@ function ControlWeb() {
     this.mostrarCrearPartida = function(){
         //dibujar un boton que al hacer click llame a crear partida de rest
 
+        var cadena = '<div class="row" id="mCP">';
+        cadena = cadena + '<button id="btnCP" class="btn btn-primary mb-2 mr-sm-2">Crear Partida</button>';
+        cadena = cadena + '</div>'
+
+
+        $('#mostrarCP').append(cadena);
+
+
+
+
+        $("#btnCP").on("click", function (e) {
+            
+            rest.crearPartida(rest.nick);  
+        })
+
+
     }
 
-    this.mostrarListaDePartidas = function (){
+    //No se como pasarle la lista por parametro
+
+    /*this.mostrarListaDePartidas = function (lista){
         //crear un control visual tipo lista para mostrar la lista de partidas
+        for (i in lista){
+            console.log(i)
+
+        }
         
-    }
+    }*/
 
 
 

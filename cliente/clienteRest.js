@@ -12,12 +12,15 @@ function ClienteRest(){
                 cli.nick=data.nick;
 				//ws.nick=data.nick;
 				//$.cookie("nick",ws.nick);      Todo esto comentado lo usaremos mas tarde
-				iu.mostrarHome(data.nick);
+				iu.mostrarHome();
+                iu.mostrarCrearPartida();
+                iu.mostrarListaPartidas(this.obtenerPartidas);
 			}
 			else{
                 console.log("No se ha podido registrar el usuario")
 				//iu.mostrarModal("El nick ya está en uso");
 				iu.mostrarAgregarUsuario();
+                
 			}
 		})
         //Aqui aun no sabemos si ha contestado el servidor
@@ -58,6 +61,16 @@ function ClienteRest(){
         })
 
     }
+
+    this.obtenerPartidas = function (){ //he hecho esto para sacar la lista de partidas, pero no se como acabarlo
+        $.getJSON("/obtenerPartidas/",function(data){
+            console.log(data);
+            return data
+
+        })
+
+    }
+    
 
     
 }
