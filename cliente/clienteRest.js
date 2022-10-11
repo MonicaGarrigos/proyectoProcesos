@@ -14,7 +14,8 @@ function ClienteRest(){
 				//$.cookie("nick",ws.nick);      Todo esto comentado lo usaremos mas tarde
 				iu.mostrarHome();
                 iu.mostrarCrearPartida();
-                iu.mostrarListaPartidas(this.obtenerPartidas);
+                cli.obtenerListaPartidas();
+                
 			}
 			else{
                 console.log("No se ha podido registrar el usuario")
@@ -28,13 +29,15 @@ function ClienteRest(){
         //de callback si estoy seguro(por si quiero poner algo que sepa seguro q tiene q ir despues)
 	}
 
-    this.crearPartida = function(nick){
+    this.crearPartida = function(){
         let cli=this;
+        let nick=cli.nick;
         
-        $.getJSON("/crearPartida/"+this.nick,function(data){
+        $.getJSON("/crearPartida/"+nick,function(data){
             console.log(data)
             if(data.codigo!=-1){
                 console.log("Partida creada por "+nick + " con codigo "+ data.codigo)
+                iu.mostrarCodigo(data.codigo);
             }
             else{
                 console.log("No se ha podido crear la partida")
@@ -62,10 +65,9 @@ function ClienteRest(){
 
     }
 
-    this.obtenerPartidas = function (){ //he hecho esto para sacar la lista de partidas, pero no se como acabarlo
-        $.getJSON("/obtenerPartidas/",function(data){
-            console.log(data);
-            return data
+    this.obtenerListaPartidas = function (){ 
+        $.getJSON("/obtenerPartidasDisponibles/",function(lista){
+            iu.mostrarListaPartidas(lista);
 
         })
 
