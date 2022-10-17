@@ -30,3 +30,9 @@ Otros años
 - integrar el modelo en la arquitectura SaaS: REST - cliente
 - persistencia
 - otros
+
+---------------------------------------------------------------------
+Siguientes pasos
+-Actualizar la lista sin preguntar al servidor ni actualizar la pagina
+-Mantener el estado: cookies, localStorage
+-Avanzar en el juego
