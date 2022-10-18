@@ -54,15 +54,26 @@ function ControlWeb() {
         let cadena = '<div class="row" id="mCP">';
         cadena = cadena + '<div class="col">'
         cadena = cadena + '<button id="btnCP" class="btn btn-primary mb-2 mr-sm-2">Crear Partida</button>';
+        
+        cadena = cadena + '<button id="btnS" class="btn btn-primary mb-2 mr-sm-2">Salir</button>';
         cadena = cadena + '</div>'
         cadena = cadena + '</div>'
 
-        $('#mostrarCP').append(cadena);
+        $('#mostrarHome').append(cadena);
 
         $("#btnCP").on("click", function (e) {
-            $('#mostrarCP').remove();
+            $('#mCP').remove();
+            $('#mLP').remove();
             rest.crearPartida(rest.nick);
         })
+
+        $("#btnS").on("click", function (e) {
+            $('#mostrarCP').remove();
+            $.removeCookie('nick');
+            
+        })
+
+        
 
 
     }
@@ -74,24 +85,61 @@ function ControlWeb() {
 
     //No se como pasarle la lista por parametro
 
-    this.mostrarListaPartidas = function (lista) {
-        //crear un control visual tipo lista para mostrar la lista de partidas
+    this.mostrarListaDePartidas=function(lista){
+		$('#mLP').remove();
+		let cadena="<div id='mLP'>";
+		cadena=cadena+'<ul class="list-group">';
+		for(i=0;i<lista.length;i++){
+		  cadena = cadena+'<li class="list-group-item">'+lista[i].codigo+' propietario: '+lista[i].owner+'</li>';
+		}
+		cadena=cadena+"</ul>";
+		cadena=cadena+"</div>"
+		$('#listaPartidas').append(cadena);
+		
+	}
 
-        $("#mLP").remove();
+    this.mostrarListaDePartidasDisponibles=function(lista){
+		$('#mLP').remove();
+		let cadena="<div class='row' id='mLP'>";
+		cadena=cadena+"<div class='col'>";
+		cadena=cadena+"<h3>Lista de partidas disponibles</h3>";
+        cadena = cadena + '<button id="btnAP" class="btn btn-primary mb-2 mr-sm-2">Actualizar Partidas</button>';
+		cadena=cadena+'<ul class="list-group">';
+		for(i=0;i<lista.length;i++){
+		  cadena = cadena+'<li class="list-group-item"><a href="#" value="'+lista[i].codigo+'"> Nick propietario: '+lista[i].owner+'</a></li>';
+		}
+		cadena=cadena+"</ul>";
+		cadena=cadena+"</div></div>"
+		$('#mostrarLP').append(cadena);
 
-        let cadena = '<div class="row" id="mLP"><h2>Lista de Partidas</h2>'
-        cadena = cadena + '<br>'
-        cadena = cadena + '<ul class="list-group">'
-        for(i=0;i<lista.length;i++){
-        cadena = cadena + '<li class="list-group-item">'+lista[i].codigo+"  "+ lista[i].owner+'</li>'
-        }
-       
-        cadena = cadena + '</ul>'
-        cadena = cadena + '</div>'
+        $("#btnAP").on("click", function (e) {
+            $('#mLP').remove();
+            rest.obtenerListaPartidasDisponibles();
+            
+        })
 
-        $('#mostrarLP').append(cadena);
+		$(".list-group a").click(function(){
+	        codigo=$(this).attr("value");
+   	        console.log(codigo);
+	        if (codigo){
+	            $('#mLP').remove();
+	            $('#mCP').remove();
+	            rest.unirseAPartida(codigo);
+	        }
+	    });		
+	}
+
+    this.comprobarCookie= function(){
 
     }
+
+    this.mostrarModal=function(msg){
+		$('#mM').remove();
+		var cadena="<p id='mM'>"+msg+"</p>";
+		$('#contenidoModal').append(cadena);
+		$('#miModal').modal("show");
+	}
+
 
 
 
