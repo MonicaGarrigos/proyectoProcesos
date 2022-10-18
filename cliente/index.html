@@ -28,27 +28,20 @@
 <body>
         <div class="container" style="margin-top:30px">
                 <div class="row">
-                        <div class="col">
-                                <div id="agregarUsuario"></div>
+                  <div class="col">
+                          <div id="agregarUsuario"></div>
                         </div>
                 </div>
                 <div class="row">
-                        <div class="col">
-                                <div id="mostrarHome"></div>
-                        </div>
+                  <div class="col-4">
+                          <div id="crearPartida"></div>
+                  </div>
+                  <div class="col-8">
+                          <div id="listaPartidas"></div>
+                  </div>
                 </div>
-                <div class="row">
-                        <div class="col-4">
-                                <div id="mostrarCP"></div>
-                        </div>
-                
-                
-                        <div class="col-8">
-                                <div id="mostrarLP"></div>
-                        </div>
-                </div>
-                
-        </div>
+              </div>
+              
         <div class="modal" id="miModal">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -69,7 +62,8 @@
         <script>
                 rest = new ClienteRest(); //aqui lleva mayuscula al ser la funcion dentro del archivo(que la he definido con mayuscula)
                 iu = new ControlWeb();
-                iu.mostrarAgregarUsuario();
+                iu.comprobarCookie();
+                //iu.mostrarAgregarUsuario();
         </script>
 </body>
 
