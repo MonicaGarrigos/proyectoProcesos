@@ -64,7 +64,7 @@ function ControlWeb() {
             $("#mCP").remove();
 			$('#mLP').remove();
 			$('#mH').remove();
-			//rest.crearPartida();
+			rest.eliminarUsuario();
 			$.removeCookie("nick");
 			iu.comprobarCookie();
 
@@ -161,11 +161,9 @@ function ControlWeb() {
         $('#miModal').modal("show");
     }
 
+    /*this.salir = function (){
 
-
-
-
-
+    }*/
 
 
     //(Jquery)Con almohadilla busca el id en el html, con punto buscará la clase, sin nada buscara los contenidos de la etiqueta

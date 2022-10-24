@@ -87,6 +87,22 @@ function ClienteRest(){
 			iu.mostrarListaDePartidasDisponibles(lista);
 		});
 	}
+
+	this.eliminarUsuario = function(){
+		let cli= this;
+
+		$.getJSON("/eliminarUsuario/"+cli.nick,function(data){
+			if (data.nick != -1) {
+			console.log("Usuario:"+cli.nick+ " eliminado correctamente");
+			}
+
+			else{
+				console.log("No se ha podido eliminar el usuario")
+			}
+			
+		});
+
+	}
     
 
     

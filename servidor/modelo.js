@@ -77,6 +77,32 @@ function Juego(){
         }
         return lista; 
     }
+
+    this.eliminarUsuario = function(nick){
+        encontrado= false;
+        for(i=0;i<this.usuarios.length;i++){
+            if(nick==this.usuarios[i].nick){
+                encontrado=true;
+                break;
+            }
+        }
+
+        if(encontrado){
+            this.finalizarPartidas(nick);
+            this.usuarios.splice(i,1);
+        }
+
+    }
+
+    this.finalizarPartidas = function(nick){
+        for(i=0;i<this.partidas.length;i++){
+            if(this.partidas[i].estoyDentro(nick)==true){
+                this.partidas[i].fase = "finalizada";
+            }
+        }
+
+
+    }
 }
 
 function Usuario(nick,juego){
@@ -89,6 +115,10 @@ function Usuario(nick,juego){
     this.unirseAPartida=function(codigo){
 		return this.juego.unirseAPartida(codigo,this);
 	}
+
+    /*this.salir= function(){
+        this.juego.eliminarUsuario(this.nick);
+    }*/
 
 }
 
@@ -122,6 +152,15 @@ function Partida(codigo,jugador){
 
     this.hayHueco = function(){
         return(this.jugadores.length<2)
+    }
+
+    this.estoyDentro = function (nick){
+        for(i=0;i<this.jugadores.length;i++){
+            if(this.jugadores[i].nick==nick){
+                return true;
+            }
+        }
+        return false;
     }
     
     this.agregarJugador(this.owner);

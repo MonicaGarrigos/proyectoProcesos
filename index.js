@@ -1,10 +1,19 @@
 const fs = require('fs');
+//express.js
 const express = require('express');
 const app = express();
+//socket.io
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+
 const PORT = process.env.PORT || 3001;
 const modelo = require ("./servidor/modelo.js");
+const sWS = require("./servidor/servidorWS.js");
 
 let juego = new modelo.Juego();
+let servidorWS = new sWS.ServidorWS();
 
 
 app.use(express.static(__dirname + "/"));
@@ -56,9 +65,26 @@ app.get("/obtenerPartidasDisponibles",function(request,response){
   response.send(lista);
 })
 
-// Start the server
-app.listen(PORT, () => {
+app.get("/eliminarUsuario/:nick",function(request,response){
+
+  let nick = request.params.nick;
+
+  let res= juego.eliminarUsuario(nick);
+  
+  response.send(res);
+})
+
+// Start the server, antes con app, ahora con sockets con server.listen
+/*app.listen(PORT, () => {
+  console.log(`App escuchando en el puerto ${PORT}`);
+  console.log('Press Ctrl+C para salir.');
+});*/
+
+server.listen(PORT, () => {
   console.log(`App escuchando en el puerto ${PORT}`);
   console.log('Press Ctrl+C para salir.');
 });
 // [END gae_flex_quickstart]
+
+//lanzar servidor
+servidorWS.lanzarServidorWS(modelo,juego);
