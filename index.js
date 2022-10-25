@@ -87,4 +87,4 @@ server.listen(PORT, () => {
 // [END gae_flex_quickstart]
 
 //lanzar servidor
-servidorWS.lanzarServidorWS(modelo,juego);
+servidorWS.lanzarServidorWS(io,juego);

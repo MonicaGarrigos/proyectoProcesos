@@ -103,6 +103,10 @@ function Juego(){
 
 
     }
+
+    this.obtenerPartida = function(codigo){
+        return this.partidas[codigo];
+    }
 }
 
 function Usuario(nick,juego){
@@ -161,6 +165,9 @@ function Partida(codigo,jugador){
             }
         }
         return false;
+    }
+    this.esJugando = function(){
+        return this.fase == "jugando";
     }
     
     this.agregarJugador(this.owner);
