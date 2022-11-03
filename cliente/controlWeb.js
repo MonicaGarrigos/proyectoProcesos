@@ -3,6 +3,7 @@ function ControlWeb() {
     this.comprobarCookie = function () {
         if ($.cookie('nick')) {
             rest.nick = $.cookie('nick');
+            cws.conectar();
             this.mostrarHome();
         } else {
             this.mostrarAgregarUsuario();
@@ -64,9 +65,10 @@ function ControlWeb() {
             $("#mCP").remove();
 			$('#mLP').remove();
 			$('#mH').remove();
-			rest.eliminarUsuario();
-			$.removeCookie("nick");
-			iu.comprobarCookie();
+			rest.usuarioSale();
+			//$.removeCookie("nick");
+			//iu.comprobarCookie();
+            
 
         })
 
@@ -127,7 +129,7 @@ function ControlWeb() {
         let cadena = "<div class='row' id='mLP'>";
         cadena = cadena + "<div class='col'>";
         cadena = cadena + "<h3>Lista de partidas disponibles</h3>";
-        cadena = cadena + '<button id="btnAP" class="btn btn-primary mb-2 mr-sm-2">Actualizar Partidas</button>';
+        //cadena = cadena + '<button id="btnAP" class="btn btn-primary mb-2 mr-sm-2">Actualizar Partidas</button>';
         cadena = cadena + '<ul class="list-group">';
         for (i = 0; i < lista.length; i++) {
             cadena = cadena + '<li class="list-group-item"><a href="#" value="' + lista[i].codigo + '"> Nick propietario: ' + lista[i].owner + '</a></li>';
@@ -136,7 +138,7 @@ function ControlWeb() {
         cadena = cadena + "</div></div>"
         $('#listaPartidas').append(cadena);
 
-        $("#btnAP").on("click", function (e) {
+        $("#btnAP").on("click", function (e) { //este es el boton que hemos quitado por los WS
             $('#mLP').remove();
             rest.obtenerListaPartidasDisponibles();
 

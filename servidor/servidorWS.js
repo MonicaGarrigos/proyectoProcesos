@@ -1,14 +1,18 @@
-function ServidorWS(){
+function ServidorWS() {
 
     //enviar peticiones
 
-    this.enviarAlRemitente=function(socket,mensaje,datos){  //Para contestar solo al que hace la peticion, abra otros de broadcast
-		socket.emit(mensaje,datos);
-	}
+    this.enviarAlRemitente = function (socket, mensaje, datos) {  //Para contestar solo al que hace la peticion, abra otros de broadcast
+        socket.emit(mensaje, datos);
+    }
 
-    this.enviarATodosEnPartida=function(io,codigo,mensaje,datos){
-		io.sockets.in(codigo).emit(mensaje,datos)
-	}
+    this.enviarATodosEnPartida = function (io, codigo, mensaje, datos) {
+        io.sockets.in(codigo).emit(mensaje, datos)
+    }
+
+    this.enviarATodos = function (socket, mens, datos) {
+        socket.broadcast.emit(mens, datos);
+    }
 
 
 
@@ -17,34 +21,33 @@ function ServidorWS(){
 
 
     //gestionar peticiones
-    this.lanzarServidorWS = function(io,juego){
-        let cli=this;
-
+    this.lanzarServidorWS = function (io, juego) {
+        let cli = this;
         io.on('connection', (socket) => {
             console.log('Usuario conectado');
-
-            socket.on("crearPartida",function(nick){ //Al igual que con rest, la idea es evitar la logica en la capa WS
+            socket.on("crearPartida", function (nick) {
                 let res = juego.jugadorCreaPartida(nick);
-                socket.join(res.codigo);
-                cli.enviarAlRemitente(socket,"partidaCreada",res);
+                let codigoStr = res.codigo.toString();
+                socket.join(codigoStr);
+                //cli.enviarAlRemitente(socket,"partidaCreada",res);
+                cli.enviarATodosEnPartida(io, codigoStr, "partidaCreada", res)
+                let lista = juego.obtenerPartidasDisponibles();
+                cli.enviarATodos(socket, "actualizarListaPartidas", lista);
+            });
+            socket.on("unirseAPartida", function (nick, codigo) {
+                let codigoStr = codigo.toString();
+                socket.join(codigoStr);
+                let res = juego.jugadorSeUneAPartida(nick, codigo);
+                cli.enviarAlRemitente(socket, "unidoAPartida", res);
+                let partida = juego.obtenerPartida(codigo);
+                if (partida.esJugando()) {
+                    cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
+                }
 
             });
-
-            socket.on("unirseAPartida",function(nick,codigo){
-                let res= juego.jugadorSeUneAPartida(nick,codigo);
-                cli.enviarAlRemitente(socket,"unidoAPartida",res);
-                socket.join(codigo);
-                //Comprobar que la partida puede comenzar
-                let partida = juego.obtenerPartida(codigo);
-                if(partida.fase.esJugando()){
-                    cli.enviarATodosEnPartida(io,codigo,"aJugar",{});
-                }
-            })
-
-          });
-
+        });
     }
 
 }
 
-module.exports.ServidorWS=ServidorWS;
+module.exports.ServidorWS = ServidorWS;

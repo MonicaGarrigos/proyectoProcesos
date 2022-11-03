@@ -65,13 +65,13 @@ app.get("/obtenerPartidasDisponibles",function(request,response){
   response.send(lista);
 })
 
-app.get("/eliminarUsuario/:nick",function(request,response){
+app.get("/salir/:nick",function(request,response){
 
   let nick = request.params.nick;
 
-  let res= juego.eliminarUsuario(nick);
+  juego.usuarioSale(nick);
   
-  response.send(res);
+  response.send({res:"ok"});
 })
 
 // Start the server, antes con app, ahora con sockets con server.listen

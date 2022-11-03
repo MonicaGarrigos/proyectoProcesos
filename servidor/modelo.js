@@ -16,6 +16,13 @@ function Juego(){
         delete this.usuarios[nick];
     }
 
+    this.usuarioSale=function(nick){
+		if (this.usuarios[nick]){
+			this.finalizarPartida(nick);
+			this.eliminarUsuario(nick);
+		}
+	}
+
     this.jugadorCreaPartida=function(nick){
         
         let res = {codigo:-1}
@@ -59,6 +66,14 @@ function Juego(){
 		}
 		return res;
 	}
+
+    //get para obtener una partida dado su codigo
+    this.obtenerPartida=function(codigo){
+		if (this.partidas[codigo]){
+			return this.partidas[codigo];
+		}
+	}
+
     this.obtenerPartidas=function(){
         let lista=[];
         for (let key in this.partidas){
@@ -78,35 +93,17 @@ function Juego(){
         return lista; 
     }
 
-    this.eliminarUsuario = function(nick){
-        encontrado= false;
-        for(i=0;i<this.usuarios.length;i++){
-            if(nick==this.usuarios[i].nick){
-                encontrado=true;
-                break;
-            }
-        }
+    
 
-        if(encontrado){
-            this.finalizarPartidas(nick);
-            this.usuarios.splice(i,1);
-        }
+    this.finalizarPartida=function(nick){
+		for (let key in this.partidas){
+			if (this.partidas[key].fase=="inicial" && this.partidas[key].estoyDentro(nick)){
+				this.partidas[key].fase="final";
+			}
+		}
+	}
 
-    }
-
-    this.finalizarPartidas = function(nick){
-        for(i=0;i<this.partidas.length;i++){
-            if(this.partidas[i].estoyDentro(nick)==true){
-                this.partidas[i].fase = "finalizada";
-            }
-        }
-
-
-    }
-
-    this.obtenerPartida = function(codigo){
-        return this.partidas[codigo];
-    }
+    
 }
 
 function Usuario(nick,juego){
@@ -119,10 +116,6 @@ function Usuario(nick,juego){
     this.unirseAPartida=function(codigo){
 		return this.juego.unirseAPartida(codigo,this);
 	}
-
-    /*this.salir= function(){
-        this.juego.eliminarUsuario(this.nick);
-    }*/
 
 }
 

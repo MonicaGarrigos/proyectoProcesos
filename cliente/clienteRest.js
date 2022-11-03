@@ -89,20 +89,12 @@ function ClienteRest(){
 		});
 	}
 
-	this.eliminarUsuario = function(){
-		let cli= this;
-
-		$.getJSON("/eliminarUsuario/"+cli.nick,function(data){
-			if (data.nick != -1) {
-			console.log("Usuario:"+cli.nick+ " eliminado correctamente");
-			}
-
-			else{
-				console.log("No se ha podido eliminar el usuario")
-			}
-			
-		});
-
+	this.usuarioSale=function(){
+		let nick=this.nick;
+		$.getJSON("/salir/"+nick,function(){
+			$.removeCookie("nick");
+			iu.comprobarCookie();
+		})
 	}
     
 
