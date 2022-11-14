@@ -18,9 +18,15 @@ function ClienteWS(){
 		this.socket.emit("abandonarPartida",rest.nick,cws.codigo);
 	}
 
-    //this.colocarBarco=function(nombre,x,y)
-    //this.barcosDesplegados=function()
-    //this.disparar=function(x,y)
+    this.colocarBarco=function(nombre,x,y){
+        this.socket.emit("colocarBarco",rest.nick,nombre,x,y)
+    }
+    this.barcosDesplegados=function(){
+        this.socket.emit("barcosDesplegados",rest.nick)
+    }
+    this.disparar=function(x,y){
+        this.socket.emit("disparar",rest.nick,x,y)
+    }
 
 
     //gestionar peticiones
@@ -65,6 +71,19 @@ function ClienteWS(){
         this.socket.on("aJugar",function(){
 			iu.mostrarModal("A jugaaar!");
 		});
+
+        this.socket.on("barcoColocado",function(){
+            iu.mostrarModal("El barco se ha colocado")
+        })
+
+        // this.socket.on("todoDesplegado",function(){
+        //     iu.mostrarModal("Todos tus barcos desplegados")
+        // })
+
+        this.socket.on("disparo",function(data){
+            iu.mostrarModal("El jugador: "+data.jugador + " ha disparado en la posicion"+ data.disparoX+ " "+data.disparoY)
+        })
+
 
     }
 

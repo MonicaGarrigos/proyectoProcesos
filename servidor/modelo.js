@@ -118,6 +118,8 @@ function Usuario(nick,juego){
 		if (this.partida.fase=="desplegando"){
 			let barco=this.flota[nombre];
 			this.tableroPropio.colocarBarco(barco,x,y);
+			//console.log(this.flota)
+			return barco
 		}
 	}
 	this.todosDesplegados=function(){
@@ -130,6 +132,7 @@ function Usuario(nick,juego){
 	}
 	this.barcosDesplegados=function(){
 		this.partida.barcosDesplegados();
+		console.log(this.partida)
 	}
 	this.disparar=function(x,y){
 		this.partida.disparar(this.nick,x,y);
@@ -153,6 +156,15 @@ function Usuario(nick,juego){
 			}
 		}
 		return true;
+	}
+
+	this.obtenerBarcoDesplegado=function(nombre){
+		for(var key in this.flota){
+			if (this.flota[key]==nombre){
+				return this.flota[key];
+			}
+			return undefined
+		}
 	}
 }
 
