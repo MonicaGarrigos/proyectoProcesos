@@ -46,6 +46,7 @@ function ClienteWS(){
                 console.log("No se ha podido crear la partida");
                 iu.mostrarModal("No se ha podido crear partida");
 				iu.mostrarCrearPartida();
+                rest.comprobarUsuario();
             }
 
         });

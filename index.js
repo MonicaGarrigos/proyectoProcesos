@@ -31,15 +31,18 @@ app.get("/agregarUsuario/:nick",function(request,response){
   response.send(res);
 });
 
+app.get("/comprobarUsuario/:nick",function(request,response){
+  let nick=request.params.nick;
+  let us=juego.obtenerUsuario(nick);
+  if(us){
+    res.nick=us.nick;
+  }
+  response.send(res);
+})
+
 app.get("/crearPartida/:nick",function(request,response){
   let nick = request.params.nick;
   let res = juego.jugadorCreaPartida(nick);
-
-  /*let usr  = juego.usuarios[nick]
-  if(usr){
-    codigo=usr.crearPartida();
-    res = {codigo:codigo};
-  }*/  //Hecho asi al principio por poner la logica aqui, que no deberia
 
   response.send(res);
 });

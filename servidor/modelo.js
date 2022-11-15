@@ -41,9 +41,9 @@ function Juego(){
     	return res;
 	}
 	this.obtenerUsuario=function(nick){
-		if (this.usuarios[nick]){
+		//if (this.usuarios[nick]){
 			return this.usuarios[nick];
-		}
+		//}
 	}
 	this.crearPartida=function(usr){
 		let codigo=Date.now();
@@ -138,7 +138,7 @@ function Usuario(nick,juego){
 		this.partida.disparar(this.nick,x,y);
 	}
 	this.meDisparan=function(x,y){
-		this.tableroPropio.meDisparan(x,y);
+		return this.tableroPropio.meDisparan(x,y);
 	}
 	this.obtenerEstado=function(x,y){
 		return this.tableroPropio.obtenerEstado(x,y);
@@ -303,13 +303,16 @@ function Tablero(size){
 		return true;
 	}
 	this.meDisparan=function(x,y){
-		this.casillas[x][y].contiene.meDisparan();
+		return this.casillas[x][y].contiene.meDisparan(this,x,y);
 	}
 	this.obtenerEstado=function(x,y){
 		return this.casillas[x][y].contiene.obtenerEstado();
 	}
 	this.marcarEstado=function(estado,x,y){
 		this.casillas[x][y].contiene=estado;
+	}
+	this.ponerAgua=function(x,y){
+		return this.casillas[x][y].contiene= new Agua();
 	}
 	this.crearTablero(size);
 }
@@ -330,7 +333,7 @@ function Barco(nombre,tam){ //"b2" barco tamaño 2
 	this.esAgua=function(){
 		return false;
 	}
-	this.meDisparan=function(){
+	this.meDisparan=function(tablero,x,y){
 		this.disparos++;
 		if (this.disparos<this.tam){
 			this.estado="tocado";
@@ -340,6 +343,8 @@ function Barco(nombre,tam){ //"b2" barco tamaño 2
 			this.estado="hundido";
 			console.log("Hundido!!!");
 		}
+		tablero.ponerAgua(x,y);
+		return this.estado;
 	}
 	this.obtenerEstado=function(){
 		return this.estado;
@@ -351,8 +356,9 @@ function Agua(){
 	this.esAgua=function(){
 		return true;
 	}
-	this.meDisparan=function(){
-		console.log("agua")
+	this.meDisparan=function(tablero,x,y){
+		console.log("agua");
+		return this.estado;
 	}
 	this.obtenerEstado=function(){
 		return "agua";
