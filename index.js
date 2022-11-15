@@ -34,6 +34,7 @@ app.get("/agregarUsuario/:nick",function(request,response){
 app.get("/comprobarUsuario/:nick",function(request,response){
   let nick=request.params.nick;
   let us=juego.obtenerUsuario(nick);
+  let res = { "nick": -1 };
   if(us){
     res.nick=us.nick;
   }

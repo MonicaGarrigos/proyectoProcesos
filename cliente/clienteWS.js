@@ -68,21 +68,31 @@ function ClienteWS(){
 				iu.mostrarListaDePartidasDisponibles(lista);
 			}
 		});
+
+        this.socket.on("partidaAbandonada",function(data){
+			if (data.codigo!=-1){
+                console.log(data.nombreA+" ha abandonado la partida con codigo: "+data.codigoP+"\n"+" Ha ganado "+data.nombreG)
+				iu.mostrarHome();
+                iu.mostrarModal(data.nombreA+" ha abandonado la partida con codigo: "+data.codigoP+"\n"+" Ha ganado "+data.nombreG);
+			}
+            else{
+                console.log("No se ha podido abandonar la partida");
+                iu.mostrarModal(data.nombreA+" ha intentado abandonar la partida pero no ha podido"); 
+            }
+		});
+
+
         
         this.socket.on("aJugar",function(){
 			iu.mostrarModal("A jugaaar!");
 		});
 
-        this.socket.on("barcoColocado",function(){
-            iu.mostrarModal("El barco se ha colocado")
+        this.socket.on("barcoColocado",function(data){
+            iu.mostrarModal("El barco: "+ data.barco + " se ha colocado")
         })
 
-        // this.socket.on("todoDesplegado",function(){
-        //     iu.mostrarModal("Todos tus barcos desplegados")
-        // })
-
         this.socket.on("disparo",function(data){
-            iu.mostrarModal("El jugador: "+data.jugador + " ha disparado en la posicion"+ data.disparoX+ " "+data.disparoY)
+            iu.mostrarModal("El jugador: "+data.jugador + " ha disparado en la posicion "+ data.disparoX+ " " +data.disparoY)
         })
 
 

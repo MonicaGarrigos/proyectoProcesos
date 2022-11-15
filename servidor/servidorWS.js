@@ -45,14 +45,20 @@ function ServidorWS() {
                 }
 
             });
-            socket.on("abandonarPartida", function (nick) { //por hacer
-                // let res = juego.jugadorCreaPartida(nick);
-                // let codigoStr = res.codigo.toString();
-                // socket.join(codigoStr);
-                // //cli.enviarAlRemitente(socket,"partidaCreada",res);
-                // cli.enviarATodosEnPartida(io, codigoStr, "partidaCreada", res)
-                // let lista = juego.obtenerPartidasDisponibles();
-                // cli.enviarATodos(socket, "actualizarListaPartidas", lista);
+            socket.on("abandonarPartida", function (nick,codigo) { //por hacer
+                let jugador= juego.obtenerUsuario(nick);
+                let partida= juego.obtenerPartida(codigo)
+                
+                let codigoStr = codigo.toString();
+                if(jugador && partida){
+                    let rival=partida.obtenerRival(jugador.nick);
+                    let res={codigoP:codigo,nombreA:jugador.nick,nombreG:rival.nick}
+                    partida.abandonarPartida(jugador)
+                    //cli.enviarAlRemitente(socket, "partidaAbandonada", res);
+                    cli.enviarATodosEnPartida(io, codigoStr, "partidaAbandonada", res);
+                    socket.leave(codigoStr)
+
+                }
             });
             socket.on("colocarBarco", function (nick,nombre,x,y) {
                 let jugador= juego.obtenerUsuario(nick);

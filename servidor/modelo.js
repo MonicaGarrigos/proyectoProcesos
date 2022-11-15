@@ -132,7 +132,7 @@ function Usuario(nick,juego){
 	}
 	this.barcosDesplegados=function(){
 		this.partida.barcosDesplegados();
-		console.log(this.partida)
+		//console.log(this.partida)
 	}
 	this.disparar=function(x,y){
 		this.partida.disparar(this.nick,x,y);
@@ -166,6 +166,8 @@ function Usuario(nick,juego){
 			return undefined
 		}
 	}
+
+	
 }
 
 function Partida(codigo,usr){
@@ -254,8 +256,9 @@ function Partida(codigo,usr){
 		let atacante=this.obtenerJugador(nick);
 		if (this.turno.nick==atacante.nick){
 			let atacado=this.obtenerRival(nick);
-			atacado.meDisparan(x,y);
-			let estado=atacado.obtenerEstado(x,y);
+			let estado=atacado.meDisparan(x,y);
+			//let estado=atacado.obtenerEstado(x,y);
+			console.log(estado);
 			atacante.marcarEstado(estado,x,y);
 			this.comprobarFin(atacado);
 		}	
@@ -270,6 +273,19 @@ function Partida(codigo,usr){
 			console.log("Ganador: "+this.turno.nick);
 		}
 	}
+	this.abandonarPartida=function(jugador){
+		if(jugador){
+			
+			rival=this.obtenerRival(jugador.nick)	
+			this.fase="final";
+			console.log("Fin de la partida");
+			console.log("Ha abandonado el jugador "+jugador.nick);
+			console.log("Ganador: "+rival.nick);
+					
+				
+		}
+	}
+
 	this.agregarJugador(this.owner);
 }
 
@@ -338,12 +354,15 @@ function Barco(nombre,tam){ //"b2" barco tamaño 2
 		if (this.disparos<this.tam){
 			this.estado="tocado";
 			console.log("Tocado");
+			
 		}
 		else{
 			this.estado="hundido";
 			console.log("Hundido!!!");
+			
 		}
 		tablero.ponerAgua(x,y);
+		//console.log(this.estado);
 		return this.estado;
 	}
 	this.obtenerEstado=function(){
@@ -358,7 +377,7 @@ function Agua(){
 	}
 	this.meDisparan=function(tablero,x,y){
 		console.log("agua");
-		return this.estado;
+		return this.obtenerEstado();
 	}
 	this.obtenerEstado=function(){
 		return "agua";

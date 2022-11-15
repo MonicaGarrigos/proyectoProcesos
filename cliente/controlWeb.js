@@ -52,7 +52,7 @@ function ControlWeb() {
 
         let cadena = '<div class="row" id="mH">';
         cadena = cadena + '<div class="col" ><h2>El juego indefinido</h2></div>';
-        cadena = cadena + "<div><p> Bienvenido " + rest.nick + "</p></div>"
+        cadena = cadena + "<div><p> Bienvenido " + rest.nick + " "+"</p></div>"
         cadena = cadena + '<div id="codigo"></div>'
         cadena = cadena + '<button id="btnS" class="btn btn-primary mb-2 mr-sm-2">Salir</button>';
         cadena = cadena + '</div>'
@@ -98,16 +98,38 @@ function ControlWeb() {
             cws.crearPartida();
         })
 
+
+
         
 
 
 
 
     }
+    
+    this.mostrarAbandonarPartida = function(){
+
+        $('#mAbP').remove();
+
+        let cadena = '<div class="row" id="mAbP">';
+        cadena = cadena + '<div class="col">'
+        cadena = cadena + '<button id="btnAbP" class="btn btn-primary mb-2 mr-sm-2">Abandonar Partida</button>';
+        cadena = cadena + '</div>'
+        cadena = cadena + '</div>'
+
+        $('#codigo').append(cadena);
+        
+        $("#btnAbP").on("click", function (e) {
+
+            cws.abandonarPartida();
+        })
+    }
 
     this.mostrarCodigo = function (codigo) {
         let cadena = " Codigo de la partida: " + codigo;
         $('#codigo').append(cadena);
+
+        iu.mostrarAbandonarPartida();
     }
 
     
@@ -166,9 +188,6 @@ function ControlWeb() {
         $('#miModal').modal("show");
     }
 
-    /*this.salir = function (){
-
-    }*/
 
 
     //(Jquery)Con almohadilla busca el id en el html, con punto buscará la clase, sin nada buscara los contenidos de la etiqueta
