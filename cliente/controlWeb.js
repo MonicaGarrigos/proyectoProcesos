@@ -51,9 +51,9 @@ function ControlWeb() {
         $("#mH").remove();
 
         let cadena = '<div class="row" id="mH">';
-        cadena = cadena + '<div class="col" ><h2>El juego indefinido</h2></div>';
-        cadena = cadena + "<div><p> Bienvenido " + rest.nick + " "+"</p></div>"
-        cadena = cadena + '<div id="codigo"></div>'
+        cadena = cadena + '<div class="col" ><h2>Batalla Naval</h2></div>';
+        cadena = cadena + "<div><h3> Bienvenido " + rest.nick + "     "+"</h3></div>"
+        cadena = cadena + '<div style="margin-bottom:15px" id="codigo"></div>'
         cadena = cadena + '<button id="btnS" class="btn btn-primary mb-2 mr-sm-2">Salir</button>';
         cadena = cadena + '</div>'
 
@@ -112,7 +112,7 @@ function ControlWeb() {
         $('#mAbP').remove();
 
         let cadena = '<div class="row" id="mAbP">';
-        cadena = cadena + '<div class="col">'
+        cadena = cadena + '<div style="margin-top:15px" class="col">'
         cadena = cadena + '<button id="btnAbP" class="btn btn-primary mb-2 mr-sm-2">Abandonar Partida</button>';
         cadena = cadena + '</div>'
         cadena = cadena + '</div>'
