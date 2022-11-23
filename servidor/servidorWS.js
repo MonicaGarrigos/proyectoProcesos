@@ -71,10 +71,9 @@ function ServidorWS() {
                 let jugador= juego.obtenerUsuario(nick);
                 if(jugador){
                 jugador.colocarBarco(nombre,x,y)
-                //let estado=us.flota[nombre].desplegado;
                 let desplegado=jugador.obtenerBarcoDesplegado(nombre)
                 //console.log(desplegado)
-                let res={barco:nombre,colocado:desplegado}
+                let res = { barco: nombre, x: x, y: y, colocado: desplegado }
                 cli.enviarAlRemitente(socket,"barcoColocado",res);
                 }
             });
@@ -86,7 +85,11 @@ function ServidorWS() {
                     let res=jugador.barcosDesplegados();
                     let codigoStr=partida.codigo.toString();
 
+                    if(partida.esJugando()) {
+
                     cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
+
+                    }
                 
                 }
             });
@@ -104,15 +107,6 @@ function ServidorWS() {
                 }
             });
 
-            socket.on("barcoColocado", function(res){
-				if(res.colocado){
-					//(x, y, type, targetPlayer)
-					tablero.puedesColocarBarco(res);
-				}
-				else{
-					iu.mostrarModal("No se puede colocar barco");
-				}
-			});
         });
     }
 

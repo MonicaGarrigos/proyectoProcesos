@@ -6,15 +6,15 @@ function Tablero() {
     this.init = function () {
         //Crear los tableros gráficos
         //Inicializar los listeners(Si usamos lo del bill)
-        var humanCells = document.querySelector('.jugador-usuario').childNodes;
-        for (var k = 0; k < humanCells.length; k++) {
+        let humanCells = document.querySelector('.jugador-usuario').childNodes;
+        for (let k = 0; k < humanCells.length; k++) {
             humanCells[k].self = this;
             humanCells[k].addEventListener('click', this.placementListener, false);
             //humanCells[k].addEventListener('mouseover', this.placementMouseover, false);
             //humanCells[k].addEventListener('mouseout', this.placementMouseout, false);
         }
-        var playerRoster = document.querySelector('.fleet-roster').querySelectorAll('li');
-        for (var i = 0; i < playerRoster.length; i++) {
+        let playerRoster = document.querySelector('.fleet-roster').querySelectorAll('li');
+        for (let i = 0; i < playerRoster.length; i++) {
             playerRoster[i].self = this;
             playerRoster[i].addEventListener('click', this.rosterListener, false);
         }
@@ -23,7 +23,8 @@ function Tablero() {
     this.colocarBarco = function (nombre, x, y) {
 
         console.log("Barco= " + nombre + " x= " + x + " y= " + y);
-        return true;
+        cws.colocarBarco(nombre, x, y);
+        //return true;
 
     }
 
@@ -35,11 +36,11 @@ function Tablero() {
     //updateCell(actualizar las celdas)
 
     this.rosterListener = function (e) {
-        var self = e.target.self;
+        let self = e.target.self;
         // Remove all classes of 'placing' from the fleet roster first
-        var roster = document.querySelectorAll('.fleet-roster li');
-        for (var i = 0; i < roster.length; i++) {
-            var classes = roster[i].getAttribute('class') || '';
+        let roster = document.querySelectorAll('.fleet-roster li');
+        for (let i = 0; i < roster.length; i++) {
+            let classes = roster[i].getAttribute('class') || '';
             classes = classes.replace('placing', '');
             roster[i].setAttribute('class', classes);
         }
@@ -52,11 +53,11 @@ function Tablero() {
     };
 
     this.placementListener = function (e) {
-        var self = e.target.self;
+        let self = e.target.self;
         if (self.placingOnGrid) {
             // Extract coordinates from event listener
-            var x = parseInt(e.target.getAttribute('data-x'), 10);
-            var y = parseInt(e.target.getAttribute('data-y'), 10);
+            let x = parseInt(e.target.getAttribute('data-x'), 10);
+            let y = parseInt(e.target.getAttribute('data-y'), 10);
             //console.log("Barco= " + self.nombreBarco + " x= " + x + " y= " + y)
             // Don't screw up the direction if the user tries to place again.
             self.colocarBarco(self.nombreBarco, x, y);
@@ -68,7 +69,7 @@ function Tablero() {
 
             //self.placingOnGrid = false;
             // if (self.areAllShipsPlaced()) {
-            //     var el = document.getElementById('rotate-button');
+            //     let el = document.getElementById('rotate-button');
             //     el.addEventListener(transitionEndEventName(),(function(){
             //         el.setAttribute('class', 'hidden');
             //         if (gameTutorial.showTutorial) {
@@ -83,32 +84,33 @@ function Tablero() {
         }
     };
 
-    this.puedesColocarBarco = function (barco) { // nombre, x, y, colocado
+    this.puedesColocarBarco = function (barco,x,y) { // nombre, x, y, colocado
         //obtener el barco completo a partir del nombre
         //bucle que recorra el tamaño del barco que marque las celdas
 
-        console.log(barco);
+        //console.log(barco);
         for (i = 0; i < barco.tam; i++) {
-            this.updateCell(barco.x + i, barco.y, "ship", "jugador-usuario");
+            this.updateCell(x + i,y, "ship", "jugador-usuario");
         }
-        this.placingOnGrid = false;
-        this.endPlacing(); //Para marcar que ya se ha colocado
+        
+        this.endPlacing(barco.nombre); //Para marcar que ya se ha colocado
     }
 
     this.endPlacing = function (shipType) {
         document.getElementById(shipType).setAttribute('class', 'placed');
+        this.placingOnGrid = false;
 
         // // Mark the ship as 'used'
         // Game.usedShips[CONST.AVAILABLE_SHIPS.indexOf(shipType)] = CONST.USED;
 
         // // Wipe out the variable when you're done with it
         // Game.placeShipDirection = null;
-        this.nombreBarco = '';
+       
         // Game.placeShipCoords = [];
     };
 
     this.updateCell = function (x, y, type, targetPlayer) {
-        var player = targetPlayer;
+        let player = targetPlayer;
         // if (targetPlayer === CONST.HUMAN_PLAYER) {
         //     player = 'human-player';
         // } else if (targetPlayer === CONST.COMPUTER_PLAYER) {
@@ -139,22 +141,22 @@ function Tablero() {
         //         break;
         // }
 
-        var classes = ['grid-cell', 'grid-cell-' + x + '-' + y, 'grid-' + type];
+        let classes = ['grid-cell', 'grid-cell-' + x + '-' + y, 'grid-' + type];
         document.querySelector('.' + player + ' .grid-cell-' + x + '-' + y).setAttribute('class', classes.join(' '));
     };
 
     this.crearGrid = function () {
-        var gridDiv = document.querySelectorAll('.grid');
+        let gridDiv = document.querySelectorAll('.grid');
 
-        for (var grid = 0; grid < gridDiv.length; grid++) {
+        for (let grid = 0; grid < gridDiv.length; grid++) {
             //gridDiv[grid].removeChild(gridDiv[grid].querySelector('.no-js')); // Removes the no-js warning
-            let myNode = gridDiv[grid];
-            while (myNode.lastElementChild) {
-                myNode.removeChild(myNode.lastElementChild);
-            }
-            for (var i = 0; i < 10; i++) {
-                for (var j = 0; j < 10; j++) {
-                    var el = document.createElement('div');
+            // let myNode = gridDiv[grid];
+            // while (myNode.lastElementChild) {
+            //     myNode.removeChild(myNode.lastElementChild);
+            // }
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
+                    let el = document.createElement('div');
                     el.setAttribute('data-x', j);
                     el.setAttribute('data-y', i);
                     el.setAttribute('class', 'grid-cell grid-cell-' + j + '-' + i);

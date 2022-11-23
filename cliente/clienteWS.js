@@ -1,6 +1,5 @@
 function ClienteWS(){
     this.socket;
-    this.codigo;
 
     //enviar peticiones
     this.conectar = function(){ //Peticion de conexion
@@ -92,7 +91,7 @@ function ClienteWS(){
             console.log(data.colocado)
             if (data.colocado) {
                 let barco = tablero.flota[data.barco];
-                tablero.puedesColocarBarco(barco);
+                tablero.puedesColocarBarco(barco,data.x,data.y);
                 iu.mostrarModal("El barco: "+ data.barco + " se ha colocado")
             }
             else {
