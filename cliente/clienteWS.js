@@ -1,5 +1,6 @@
 function ClienteWS(){
     this.socket;
+    this.codigo;
 
     //enviar peticiones
     this.conectar = function(){ //Peticion de conexion
@@ -88,12 +89,31 @@ function ClienteWS(){
 		});
 
         this.socket.on("barcoColocado",function(data){
-            iu.mostrarModal("El barco: "+ data.barco + " se ha colocado")
+            console.log(data.colocado)
+            if (data.colocado) {
+                let barco = tablero.flota[data.barco];
+                tablero.puedesColocarBarco(barco);
+                iu.mostrarModal("El barco: "+ data.barco + " se ha colocado")
+            }
+            else {
+                iu.mostrarModal("No se puede colocar barco")
+            }
         })
 
         this.socket.on("disparo",function(data){
             iu.mostrarModal("El jugador: "+data.jugador + " ha disparado en la posicion "+ data.disparoX+ " " +data.disparoY)
         })
+
+        this.socket.on("partidaTerminada", function () {
+            iu.mostrarModal("La partida ha terminado");
+        });
+
+        this.socket.on("faseDesplegando", function (data) {
+            tablero.flota = data.flota;
+            //tablero.mostrar(true)
+            // tablero.mostrarFlota(); //data.flota();
+            console.log("Ya puedes desplegar la flota");
+        });
 
 
     }

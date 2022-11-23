@@ -40,9 +40,16 @@ function ServidorWS() {
                 let res = juego.jugadorSeUneAPartida(nick, codigo);
                 cli.enviarAlRemitente(socket, "unidoAPartida", res);
                 let partida = juego.obtenerPartida(codigo);
-                if (partida.esJugando()) {
-                    cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
-                }
+                // if (partida.esJugando()) {
+                //     cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
+                // }
+                if(partida.esDesplegando()){
+					let us = juego.obtenerUsuario(nick);
+					let flota = us.obtenerFlota();
+					let res = {};
+					res.flota = flota;
+					cli.enviarATodosEnPartida(io,codigoStr,"faseDesplegando",res);
+				}
 
             });
             socket.on("abandonarPartida", function (nick,codigo) { //por hacer
@@ -66,6 +73,7 @@ function ServidorWS() {
                 jugador.colocarBarco(nombre,x,y)
                 //let estado=us.flota[nombre].desplegado;
                 let desplegado=jugador.obtenerBarcoDesplegado(nombre)
+                //console.log(desplegado)
                 let res={barco:nombre,colocado:desplegado}
                 cli.enviarAlRemitente(socket,"barcoColocado",res);
                 }
@@ -95,6 +103,16 @@ function ServidorWS() {
                 cli.enviarATodosEnPartida(io,codigoStr,"disparo",res);
                 }
             });
+
+            socket.on("barcoColocado", function(res){
+				if(res.colocado){
+					//(x, y, type, targetPlayer)
+					tablero.puedesColocarBarco(res);
+				}
+				else{
+					iu.mostrarModal("No se puede colocar barco");
+				}
+			});
         });
     }
 

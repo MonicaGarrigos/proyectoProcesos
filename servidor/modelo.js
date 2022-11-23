@@ -158,13 +158,21 @@ function Usuario(nick,juego){
 		return true;
 	}
 
+	this.obtenerFlota = function () {
+        return this.flota;
+    }
+
 	this.obtenerBarcoDesplegado=function(nombre){
 		for(var key in this.flota){
-			if (this.flota[key]==nombre){
+			console.log(this.flota[key])
+			console.log(nombre)
+			if (this.flota[key].nombre==nombre){
+				console.log("Entro en el if")
 				return this.flota[key];
 			}
-			return undefined
+			
 		}
+		return undefined
 	}
 
 	
@@ -182,7 +190,7 @@ function Partida(codigo,usr){
 			this.jugadores.push(usr);
 			console.log("El usuario "+usr.nick+" se une a la partida "+this.codigo);
 			usr.partida=this;
-			usr.inicializarTableros(5);
+			usr.inicializarTableros(10);
 			usr.inicializarFlota();
 			this.comprobarFase();
 		}

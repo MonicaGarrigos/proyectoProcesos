@@ -48,7 +48,11 @@ describe("El juego...", function() {
   //  expect(us2.tableroPropio.casillas[0].length).toEqual(5);
     
     //habría que recorrer todo el tablero
-    expect(us1.tableroPropio.casillas[0][0].contiene.nombre).toEqual("agua");
+    for(x=0;x<us1.tableroPropio.casillas.length;x++){
+      for(y=0;y<us1.tableroPropio.casillas[x].length;y++){
+        expect(us1.tableroPropio.casillas[x][y].contiene.nombre).toEqual("agua");
+      }
+    }
   });
 
   it("los dos jugadores tienen flota (2 barcos, tam 2 y 4)",function(){
