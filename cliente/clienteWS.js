@@ -92,7 +92,8 @@ function ClienteWS(){
             if (data.colocado) {
                 let barco = tablero.flota[data.barco];
                 tablero.puedesColocarBarco(barco,data.x,data.y);
-                iu.mostrarModal("El barco: "+ data.barco + " se ha colocado")
+                iu.mostrarModal("El barco: "+ data.barco + " se ha colocado");
+                cli.barcosDesplegados();
             }
             else {
                 iu.mostrarModal("No se puede colocar barco")
