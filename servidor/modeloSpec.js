@@ -75,6 +75,29 @@ describe("El juego...", function() {
     expect(partida.esDesplegando()).toEqual(true); //Este metodo no lo tenemos
   })
 
+  describe("Barcos fuera de limites",function(){
+    beforeEach(function(){ 
+      us1.colocarBarco("b2",9,9); // no cabe
+	    us1.colocarBarco("b4",9,7); // no cabe
+	    us1.barcosDesplegados();
+	    us2.colocarBarco("b2",7,7);// Este si deberia el resto no 7,7 8,7
+	    us2.colocarBarco("b4",9,9);// no cabe
+	    us2.barcosDesplegados();    
+    });
+
+    it("Comprobar que no se puede colocar barcos fuera de los limites",function(){
+      barco2us1=us1.obtenerBarcoDesplegado("b2");
+      barco4us1=us1.obtenerBarcoDesplegado("b4");
+      barco2us2=us2.obtenerBarcoDesplegado("b2");
+      barco4us2=us2.obtenerBarcoDesplegado("b4");
+      expect(us1.tableroPropio.casillas[9][9].contiene.nombre).toEqual("agua");
+      expect(us1.tableroPropio.casillas[9][7].contiene.nombre).toEqual("agua");
+      expect(us2.tableroPropio.casillas[7][7].contiene).toEqual(barco2us2);//En estos dos si deberian de estar
+      expect(us2.tableroPropio.casillas[8][7].contiene).toEqual(barco2us2);
+      expect(us2.tableroPropio.casillas[9][9].contiene.nombre).toEqual("agua");
+    })
+  })
+
   describe("A jugar!",function(){
     beforeEach(function(){ //Como esta anidado, el beforeEach de arriba tambien se hace
       us1.colocarBarco("b2",0,0); // 0,0 1,0
@@ -106,6 +129,7 @@ describe("El juego...", function() {
 
 
     })
+
 
     it("Comprobar que las flotas estan desplegadas",function(){ //metodos todosDesplegados...
       expect(us1.todosDesplegados()).toEqual(true);

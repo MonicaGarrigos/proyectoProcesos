@@ -107,6 +107,10 @@ function ClienteWS(){
             iu.mostrarModal("La partida ha terminado");
         });
 
+        this.socket.on("noEsTuTurno", function (data) {
+            iu.mostrarModal("No puedes disparar no es tu turno");
+        });
+
         this.socket.on("faseDesplegando", function (data) {
             tablero.flota = data.flota;
             //tablero.mostrar(true)

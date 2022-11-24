@@ -43,23 +43,23 @@ function ServidorWS() {
                 // if (partida.esJugando()) {
                 //     cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
                 // }
-                if(partida.esDesplegando()){
-					let us = juego.obtenerUsuario(nick);
-					let flota = us.obtenerFlota();
-					let res = {};
-					res.flota = flota;
-					cli.enviarATodosEnPartida(io,codigoStr,"faseDesplegando",res);
-				}
+                if (partida.esDesplegando()) {
+                    let us = juego.obtenerUsuario(nick);
+                    let flota = us.obtenerFlota();
+                    let res = {};
+                    res.flota = flota;
+                    cli.enviarATodosEnPartida(io, codigoStr, "faseDesplegando", res);
+                }
 
             });
-            socket.on("abandonarPartida", function (nick,codigo) { //por hacer
-                let jugador= juego.obtenerUsuario(nick);
-                let partida= juego.obtenerPartida(codigo)
-                
+            socket.on("abandonarPartida", function (nick, codigo) { //por hacer
+                let jugador = juego.obtenerUsuario(nick);
+                let partida = juego.obtenerPartida(codigo)
+
                 let codigoStr = codigo.toString();
-                if(jugador && partida){
-                    let rival=partida.obtenerRival(jugador.nick);
-                    let res={codigoP:codigo,nombreA:jugador.nick,nombreG:rival.nick}
+                if (jugador && partida) {
+                    let rival = partida.obtenerRival(jugador.nick);
+                    let res = { codigoP: codigo, nombreA: jugador.nick, nombreG: rival.nick }
                     partida.abandonarPartida(jugador)
                     //cli.enviarAlRemitente(socket, "partidaAbandonada", res);
                     cli.enviarATodosEnPartida(io, codigoStr, "partidaAbandonada", res);
@@ -67,43 +67,48 @@ function ServidorWS() {
 
                 }
             });
-            socket.on("colocarBarco", function (nick,nombre,x,y) {
-                let jugador= juego.obtenerUsuario(nick);
-                if(jugador){
-                jugador.colocarBarco(nombre,x,y)
-                let desplegado=jugador.obtenerBarcoDesplegado(nombre)
-                //console.log(desplegado)
-                let res = { barco: nombre, x: x, y: y, colocado: desplegado }
-                cli.enviarAlRemitente(socket,"barcoColocado",res);
+            socket.on("colocarBarco", function (nick, nombre, x, y) {
+                let jugador = juego.obtenerUsuario(nick);
+                if (jugador) {
+                    jugador.colocarBarco(nombre, x, y)
+                    let desplegado = jugador.obtenerBarcoDesplegado(nombre,x)
+                    console.log(desplegado)
+                    let res = { barco: nombre, x: x, y: y, colocado: desplegado }
+                    cli.enviarAlRemitente(socket, "barcoColocado", res);
                 }
             });
 
             socket.on("barcosDesplegados", function (nick) {
-                let jugador= juego.obtenerUsuario(nick);
-                if(jugador){
-                    let partida=jugador.partida;
-                    let res=jugador.barcosDesplegados();
-                    let codigoStr=partida.codigo.toString();
+                let jugador = juego.obtenerUsuario(nick);
+                if (jugador) {
+                    let partida = jugador.partida;
+                    let res = jugador.barcosDesplegados();
+                    let codigoStr = partida.codigo.toString();
 
-                    if(partida.esJugando()) {
+                    if (partida.esJugando()) {
 
-                    cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
+                        cli.enviarATodosEnPartida(io, codigoStr, "aJugar", {});
 
                     }
-                
+
                 }
             });
-            socket.on("disparar", function (nick,x,y) {
-                let jugador= juego.obtenerUsuario(nick);
-                if(jugador){
-
-                let partida=jugador.partida;
-                jugador.disparar(x,y)
-                let codigoStr=partida.codigo.toString();
-
-                let res={jugador:nick,disparoX:x,disparoY:y}
-
-                cli.enviarATodosEnPartida(io,codigoStr,"disparo",res);
+            socket.on("disparar", function (nick, x, y) {
+                let jugador = juego.obtenerUsuario(nick);
+                let res = { jugador: nick, disparoX: x, disparoY: y }
+                if (jugador) {
+                    let partida = jugador.partida;
+                    let turno = partida.obtenerTurno();
+                    if (jugador == turno) {
+                        console.log("Si es tu turno,socket")
+                        jugador.disparar(x, y)
+                        let codigoStr = partida.codigo.toString();
+                        cli.enviarATodosEnPartida(io, codigoStr, "disparo", res);
+                    }
+                    else{ 
+                        console.log("No es tu turno,socket")
+                        cli.enviarAlRemitente(socket, "noEsTuTurno", res);
+                }
                 }
             });
 
