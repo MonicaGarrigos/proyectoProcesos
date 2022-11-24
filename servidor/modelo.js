@@ -167,18 +167,7 @@ function Usuario(nick, juego) {
 		return this.flota;
 	}
 
-	// this.obtenerBarcoDesplegado = function (nombre) {
-	// 	for (var key in this.flota) {
-	// 		console.log(this.flota[key])
-	// 		console.log(nombre)
-	// 		if (this.flota[key].nombre == nombre) {
-	// 			console.log("Entro en el if")
-	// 			return this.flota[key];
-	// 		}
 
-	// 	}
-	// 	return undefined
-	// }
 	this.obtenerBarcoDesplegado = function (nombre, x) {
         for (let key in this.flota) {
             if (this.flota[key].nombre == nombre) {

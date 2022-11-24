@@ -18,6 +18,11 @@ function Tablero() {
             playerRoster[i].self = this;
             playerRoster[i].addEventListener('click', this.rosterListener, false);
         }
+        var computerCells = document.querySelector('.jugador-rival').childNodes;
+		for (var j = 0; j < computerCells.length; j++) {
+			computerCells[j].self = this;
+			computerCells[j].addEventListener('click', this.shootListener, false);
+		}
     }
 
     this.colocarBarco = function (nombre, x, y) {
@@ -83,6 +88,13 @@ function Tablero() {
             //};
         }
     };
+
+    this.shootListener=function(e){
+		var x = parseInt(e.target.getAttribute('data-x'), 10);
+		var y = parseInt(e.target.getAttribute('data-y'), 10);
+		console.log("disparo x: "+x+" y: "+y);
+		cws.disparar(x,y);
+	}
 
     this.puedesColocarBarco = function (barco,x,y) { // nombre, x, y, colocado
         //obtener el barco completo a partir del nombre
