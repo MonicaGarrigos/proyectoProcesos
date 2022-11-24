@@ -311,8 +311,10 @@ function Tablero(size){
 	}
 	this.colocarBarco=function(barco,x,y){
 		if (this.casillasLibres(x,y,barco.tam)){
-			for(i=x;i<barco.tam;i++){
+			for(i=x;i<barco.tam + x;i++){
 				this.casillas[i][y].contiene=barco;
+				console.log('Revisando casillas',i,y,':',this.casillas[i][y].contiene);
+                // console.log('Barco', barco.nombre, 'colocado en', i, y)
 			}
 			barco.desplegado=true;
 		}

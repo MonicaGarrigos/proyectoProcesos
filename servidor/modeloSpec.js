@@ -77,43 +77,55 @@ describe("El juego...", function() {
 
   describe("A jugar!",function(){
     beforeEach(function(){ //Como esta anidado, el beforeEach de arriba tambien se hace
-      us1.colocarBarco("b2",1,0); // 0,0 1,0
+      us1.colocarBarco("b2",0,0); // 0,0 1,0
 	    us1.colocarBarco("b4",0,1); // 0,1 1,1 2,1 3,1
 	    us1.barcosDesplegados();
-	    us2.colocarBarco("b2",0,0);
-	    us2.colocarBarco("b4",0,1);
+	    us2.colocarBarco("b2",3,3);// 3,3 4,3
+	    us2.colocarBarco("b4",4,4);// 4,4 5,4 6,4 7,4
 	    us2.barcosDesplegados();    
     });
 
     it("Comprobar que los barcos estan bien colocados",function(){
       barco2us1=us1.obtenerBarcoDesplegado("b2");
       barco4us1=us1.obtenerBarcoDesplegado("b4");
+      barco2us2=us2.obtenerBarcoDesplegado("b2");
+      barco4us2=us2.obtenerBarcoDesplegado("b4");
 
+      expect(us1.tableroPropio.casillas[0][0].contiene).toEqual(barco2us1);
       expect(us1.tableroPropio.casillas[1][0].contiene).toEqual(barco2us1);
-      expect(us1.tableroPropio.casillas[2][0].contiene).toEqual(barco2us1);
+      expect(us1.tableroPropio.casillas[0][1].contiene).toEqual(barco4us1);
+      expect(us1.tableroPropio.casillas[1][1].contiene).toEqual(barco4us1);
+      expect(us1.tableroPropio.casillas[2][1].contiene).toEqual(barco4us1);
+      expect(us1.tableroPropio.casillas[3][1].contiene).toEqual(barco4us1);
+      expect(us2.tableroPropio.casillas[3][3].contiene).toEqual(barco2us2);
+      expect(us2.tableroPropio.casillas[4][3].contiene).toEqual(barco2us2);
+      expect(us2.tableroPropio.casillas[4][4].contiene).toEqual(barco4us2);
+      expect(us2.tableroPropio.casillas[5][4].contiene).toEqual(barco4us2);
+      expect(us2.tableroPropio.casillas[6][4].contiene).toEqual(barco4us2);
+      expect(us2.tableroPropio.casillas[7][4].contiene).toEqual(barco4us2);
 
 
     })
 
-    xit("Comprobar que las flotas estan desplegadas",function(){ //metodos todosDesplegados...
+    it("Comprobar que las flotas estan desplegadas",function(){ //metodos todosDesplegados...
       expect(us1.todosDesplegados()).toEqual(true);
       expect(us2.todosDesplegados()).toEqual(true);
 
     });
 
-    xit("Comprobar jugada que Pepe gana",function(){
+    it("Comprobar jugada que Pepe gana",function(){
       expect(us2.flota["b2"].obtenerEstado()).toEqual("intacto");
       expect(us2.flota["b4"].obtenerEstado()).toEqual("intacto");
-      us1.disparar(0,0);
+      us1.disparar(3,3);
       expect(us2.flota["b2"].obtenerEstado()).toEqual("tocado");
-	    us1.disparar(1,0);
+	    us1.disparar(4,3);
       expect(us2.flota["b2"].obtenerEstado()).toEqual("hundido");
       expect(us2.flota["b4"].obtenerEstado()).toEqual("intacto");
-	    us1.disparar(0,1);
+	    us1.disparar(4,4);
       expect(us2.flota["b4"].obtenerEstado()).toEqual("tocado");
-	    us1.disparar(1,1);
-	    us1.disparar(2,1);
-	    us1.disparar(3,1);
+	    us1.disparar(5,4);
+	    us1.disparar(6,4);
+	    us1.disparar(7,4);
       expect(us2.flota["b4"].obtenerEstado()).toEqual("hundido");
       expect(us2.flotaHundida()).toEqual(true);
       expect(us1.flotaHundida()).toEqual(false);
@@ -122,7 +134,7 @@ describe("El juego...", function() {
 
     });
 
-    xit("Comprobar el cambio de turno",function(){
+    it("Comprobar el cambio de turno",function(){
       expect(partida.turno).toEqual(us1);
       us1.disparar(2,2);
       expect(partida.turno).toEqual(us2);
@@ -130,7 +142,7 @@ describe("El juego...", function() {
 
     });
 
-    xit("Comprobar que no deja disparar si no es tu turno",function(){
+    it("Comprobar que no deja disparar si no es tu turno",function(){
       expect(partida.turno).toEqual(us1);
       expect(us1.flota["b2"].obtenerEstado()).toEqual("intacto");
       us2.disparar(0,0);
