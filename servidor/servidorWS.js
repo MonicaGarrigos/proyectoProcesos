@@ -98,19 +98,28 @@ function ServidorWS() {
                 let res = { jugador: nick, disparoX: x, disparoY: y }
                 if (jugador) {
                     let partida = jugador.partida;
+                    let rival=partida.obtenerRival(nick);
                     let turno = partida.obtenerTurno();
+                    let impacto = rival.meDisparan(x, y);
+                    console.log(impacto,"ServSo")
+                    let res2 = { atacante: jugador.nick, impacto: impacto, x: x, y: y, turno: turno.nick }
                     if (jugador == turno) {
-                        console.log("Si es tu turno,socket")
+                        //console.log("Si es tu turno,socket")
                         jugador.disparar(x, y)
                         let codigoStr = partida.codigo.toString();
-                        cli.enviarATodosEnPartida(io, codigoStr, "disparo", res);
+                        if (partida.esFinal()) {
+                            cli.enviarATodosEnPartida(io, partida.codigo.toString(), "finalPartida", jugador.nick);
+                        }
+                        cli.enviarATodosEnPartida(io, codigoStr, "disparo", res2);
                     }
                     else{ 
-                        console.log("No es tu turno,socket")
+                        //console.log("No es tu turno,socket")
                         cli.enviarAlRemitente(socket, "noEsTuTurno", res);
                 }
                 }
             });
+
+           
 
         });
     }

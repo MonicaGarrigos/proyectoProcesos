@@ -33,8 +33,14 @@ function Tablero() {
 
     }
 
-    this.mostrarTablero = function () {
+    this.mostrarTablero = function (mostrar) {
         //Para que no se haga desde el principio lo hacemos aparte
+        let tablero = document.getElementById("tablero");
+        if (mostrar) {
+            tablero.style.display = "block";
+        } else {
+            tablero.style.display = "none";
+        }
 
     }
     //manjedores(click en el tablero propio,click tablero rival)
@@ -90,8 +96,8 @@ function Tablero() {
     };
 
     this.shootListener=function(e){
-		var x = parseInt(e.target.getAttribute('data-x'), 10);
-		var y = parseInt(e.target.getAttribute('data-y'), 10);
+		let x = parseInt(e.target.getAttribute('data-x'), 10);
+		let y = parseInt(e.target.getAttribute('data-y'), 10);
 		console.log("disparo x: "+x+" y: "+y);
 		cws.disparar(x,y);
 	}
@@ -101,7 +107,7 @@ function Tablero() {
         //bucle que recorra el tamaño del barco que marque las celdas
 
         //console.log(barco);
-        for (i = 0; i < barco.tam; i++) {
+        for (let i = 0; i < barco.tam; i++) {
             this.updateCell(x + i,y, "ship", "jugador-usuario");
         }
         
@@ -180,9 +186,7 @@ function Tablero() {
     };
     this.crearGrid();
     this.init();
-
-
-
+    this.mostrarTablero(false)
 
 
 }

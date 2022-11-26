@@ -100,9 +100,15 @@ function ClienteWS(){
             }
         })
 
-        this.socket.on("disparo",function(data){
-            iu.mostrarModal("El jugador: "+data.jugador + " ha disparado en la posicion "+ data.disparoX+ " " +data.disparoY)
-        })
+        this.socket.on("disparo",function(res){
+            console.log(res.impacto)
+			if (res.atacante==rest.nick){
+				tablero.updateCell(res.x,res.y,res.impacto,'jugador-rival');
+			}
+			else{
+				tablero.updateCell(res.x,res.y,res.impacto,'jugador-usuario');	
+			}
+		});
 
         this.socket.on("partidaTerminada", function () {
             iu.mostrarModal("La partida ha terminado");
@@ -113,10 +119,16 @@ function ClienteWS(){
         });
 
         this.socket.on("faseDesplegando", function (data) {
+            tablero.mostrarTablero(true)
             tablero.flota = data.flota;
-            //tablero.mostrar(true)
             // tablero.mostrarFlota(); //data.flota();
             console.log("Ya puedes desplegar la flota");
+        });
+
+        this.socket.on("finalPartida", function (res) {
+            iu.mostrarModal(res+' ha ganado la partida!!');
+            tablero.mostrarTablero(false)
+            iu.finalPartida()
         });
 
 

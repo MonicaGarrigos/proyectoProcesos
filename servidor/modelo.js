@@ -228,6 +228,9 @@ function Partida(codigo, usr) {
 	this.esDesplegando = function () {
 		return this.fase == "desplegando";
 	}
+	this.esFinal = function () {
+		return this.fase == "final";
+	}
 	this.flotasDesplegadas = function () {
 		for (i = 0; i < this.jugadores.length; i++) {
 			if (!this.jugadores[i].todosDesplegados()) {
@@ -278,7 +281,9 @@ function Partida(codigo, usr) {
 			//let estado=atacado.obtenerEstado(x,y);
 			console.log(estado);
 			atacante.marcarEstado(estado, x, y);
+			
 			this.comprobarFin(atacado);
+			console.log(atacante.nick + ' dispara a ' + atacado.nick + ' en casillas ' + x, y);
 		}
 		else {
 			console.log("No es tu turno")
@@ -384,12 +389,12 @@ function Barco(nombre, tam) { //"b2" barco tamaño 2
 		this.disparos++;
 		if (this.disparos < this.tam) {
 			this.estado = "tocado";
-			console.log("Tocado");
+			//console.log("Tocado");
 
 		}
 		else {
 			this.estado = "hundido";
-			console.log("Hundido!!!");
+			//console.log("Hundido!!!");
 
 		}
 		tablero.ponerAgua(x, y);
@@ -407,7 +412,7 @@ function Agua() {
 		return true;
 	}
 	this.meDisparan = function (tablero, x, y) {
-		console.log("agua");
+		//console.log("agua");
 		return this.obtenerEstado();
 	}
 	this.obtenerEstado = function () {

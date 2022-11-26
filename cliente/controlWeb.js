@@ -179,6 +179,11 @@ function ControlWeb() {
         });
     }
 
+    this.finalPartida = function(){
+		$('#mH').remove()
+		this.mostrarHome()
+	}
+
     
 
     this.mostrarModal = function (msg) {
