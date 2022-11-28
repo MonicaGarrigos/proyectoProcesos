@@ -158,7 +158,7 @@ describe("El juego...", function() {
 
     });
 
-    it("Comprobar el cambio de turno",function(){
+    it("Comprobar el cambio de turno",function(){ //Comprobar también que no cambia de turno si acierta
       expect(partida.turno).toEqual(us1);
       us1.disparar(2,2);
       expect(partida.turno).toEqual(us2);

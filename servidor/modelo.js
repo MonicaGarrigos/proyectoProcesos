@@ -118,7 +118,7 @@ function Usuario(nick, juego) {
 		if (this.partida.fase == "desplegando") {
 			let barco = this.flota[nombre];
 			this.tableroPropio.colocarBarco(barco, x, y);
-			//console.log(this.flota)
+			console.log("El usuario",this.nick,"coloca el barco",barco.nombre,"en la posicion",x,y)
 			return barco
 		}
 	}
@@ -140,7 +140,7 @@ function Usuario(nick, juego) {
 		//console.log(this.partida)
 	}
 	this.disparar = function (x, y) {
-		this.partida.disparar(this.nick, x, y);
+		return this.partida.disparar(this.nick, x, y);
 	}
 	this.meDisparan = function (x, y) {
 		return this.tableroPropio.meDisparan(x, y);
@@ -284,6 +284,7 @@ function Partida(codigo, usr) {
 			
 			this.comprobarFin(atacado);
 			console.log(atacante.nick + ' dispara a ' + atacado.nick + ' en casillas ' + x, y);
+			return estado;
 		}
 		else {
 			console.log("No es tu turno")
@@ -326,16 +327,16 @@ function Tablero(size) {
 	}
 
 	this.colocarBarco = function (barco, x, y) {
-		if (this.comprobarLimites(barco.tam, x)) {
+		//if (this.comprobarLimites(barco.tam, x)) {
 			if (this.casillasLibres(x, y, barco.tam)) {
 				for (i = x; i < barco.tam + x; i++) {
 					this.casillas[i][y].contiene = barco;
-					console.log('Revisando casillas', i, y, ':', this.casillas[i][y].contiene);
+					//console.log('Revisando casillas', i, y, ':', this.casillas[i][y].contiene);
 					// console.log('Barco', barco.nombre, 'colocado en', i, y)
 				}
 				barco.desplegado = true;
 			}
-		}
+		//}
 	}
 
 	this.comprobarLimites = function (tam, x) {
@@ -348,7 +349,7 @@ function Tablero(size) {
 	this.casillasLibres = function (x, y, tam) {
 		for (i = x; i < tam; i++) {
 			let contiene = this.casillas[i][y].contiene;
-			if (!contiene.esAgua()) {
+			if (!contiene.esAgua() || this.comprobarLimites(tam,x)) {
 				return false;
 			}
 		}

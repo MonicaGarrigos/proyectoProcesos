@@ -70,9 +70,9 @@ function ServidorWS() {
             socket.on("colocarBarco", function (nick, nombre, x, y) {
                 let jugador = juego.obtenerUsuario(nick);
                 if (jugador) {
-                    jugador.colocarBarco(nombre, x, y)
-                    let desplegado = jugador.obtenerBarcoDesplegado(nombre,x)
-                    console.log(desplegado)
+                    let desplegado=jugador.colocarBarco(nombre, x, y)
+                    //let desplegado = jugador.obtenerBarcoDesplegado(nombre,x)
+                    //console.log(desplegado)
                     let res = { barco: nombre, x: x, y: y, colocado: desplegado }
                     cli.enviarAlRemitente(socket, "barcoColocado", res);
                 }
@@ -98,18 +98,21 @@ function ServidorWS() {
                 let res = { jugador: nick, disparoX: x, disparoY: y }
                 if (jugador) {
                     let partida = jugador.partida;
-                    let rival=partida.obtenerRival(nick);
+                    //let rival=partida.obtenerRival(nick);
                     let turno = partida.obtenerTurno();
-                    let impacto = rival.meDisparan(x, y);
-                    console.log(impacto,"ServSo")
-                    let res2 = { atacante: jugador.nick, impacto: impacto, x: x, y: y, turno: turno.nick }
+                    
+                    
                     if (jugador == turno) {
                         //console.log("Si es tu turno,socket")
-                        jugador.disparar(x, y)
+                        let impacto=jugador.disparar(x, y)
+                        console.log(impacto,"ServSo")
+                        //let impacto = rival.meDisparan(x, y);
                         let codigoStr = partida.codigo.toString();
                         if (partida.esFinal()) {
                             cli.enviarATodosEnPartida(io, partida.codigo.toString(), "finalPartida", jugador.nick);
                         }
+                        
+                        let res2 = { atacante: jugador.nick, impacto: impacto, x: x, y: y, turno: turno.nick }
                         cli.enviarATodosEnPartida(io, codigoStr, "disparo", res2);
                     }
                     else{ 
