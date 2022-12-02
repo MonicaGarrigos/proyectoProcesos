@@ -304,7 +304,9 @@ function Partida(codigo, usr) {
 			this.fase = "final";
 			console.log("Fin de la partida");
 			console.log("Ha abandonado el jugador " + jugador.nick);
+			if(rival){
 			console.log("Ganador: " + rival.nick);
+			}
 
 
 		}

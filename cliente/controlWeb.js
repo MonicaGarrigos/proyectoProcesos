@@ -49,6 +49,7 @@ function ControlWeb() {
     this.mostrarHome = function () {
 
         $("#mH").remove();
+        $('#gc').remove();
 
         let cadena = '<div class="row" id="mH">';
         cadena = cadena + '<div class="col" ><h2>Batalla Naval</h2></div>';
@@ -66,6 +67,7 @@ function ControlWeb() {
             $("#mCP").remove();
 			$('#mLP').remove();
 			$('#mH').remove();
+            $('#gc').remove();
 			rest.usuarioSale();
 			//$.removeCookie("nick");
 			//iu.comprobarCookie();
@@ -181,6 +183,9 @@ function ControlWeb() {
 
     this.finalPartida = function(){
 		$('#mH').remove()
+        cws.codigo = undefined;
+		$('#gc').remove();
+		tablero = new Tablero(10);
 		this.mostrarHome()
 	}
 

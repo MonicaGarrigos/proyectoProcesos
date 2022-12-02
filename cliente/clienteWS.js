@@ -81,6 +81,11 @@ function ClienteWS(){
             }
 		});
 
+        this.socket.on("partidaCancelada", function (res) {
+            iu.mostrarModal("Has terminado la partida " + res.codigoP + " antes de que se uniese alguien")
+            iu.mostrarHome()
+        });
+
 
         
         this.socket.on("aJugar",function(){
@@ -103,15 +108,16 @@ function ClienteWS(){
         this.socket.on("disparo",function(res){
             console.log(res.impacto)
 			if (res.atacante==rest.nick){
-				tablero.updateCell(res.x,res.y,res.impacto,'jugador-rival');
+				tablero.updateCell(res.x,res.y,res.impacto,'computer-player');
 			}
 			else{
-				tablero.updateCell(res.x,res.y,res.impacto,'jugador-usuario');	
+				tablero.updateCell(res.x,res.y,res.impacto,'human-player');	
 			}
 		});
 
         this.socket.on("partidaTerminada", function () {
             iu.mostrarModal("La partida ha terminado");
+            //tablero.crearGrid();
         });
 
         this.socket.on("noEsTuTurno", function (data) {
@@ -119,16 +125,18 @@ function ClienteWS(){
         });
 
         this.socket.on("faseDesplegando", function (data) {
-            tablero.mostrarTablero(true)
+            //tablero.mostrarTablero(true)
             tablero.flota = data.flota;
-            // tablero.mostrarFlota(); //data.flota();
+            tablero.elementosGrid()
+            tablero.mostrarFlota();
             console.log("Ya puedes desplegar la flota");
         });
 
         this.socket.on("finalPartida", function (res) {
             iu.mostrarModal(res+' ha ganado la partida!!');
-            tablero.mostrarTablero(false)
-            iu.finalPartida()
+            // tablero.crearGrid();
+            // tablero.mostrarTablero(false);
+            iu.finalPartida();
         });
 
 

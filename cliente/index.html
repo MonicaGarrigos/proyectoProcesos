@@ -49,7 +49,7 @@
                   </div>
                 </div>
                 <div class="row" id="tablero">
-                        <div class="col-4">
+                        <!--<div class="col-4">
                                 <h2>Barcos</h2>
                                 <ul class="fleet-roster">
                                                <li id="b2">b2</li>
@@ -67,7 +67,7 @@
                                                <div class="grid jugador-rival"></div>
                                        </div>
                                
-                         </div>
+                         </div-->
                  </div> 
                 
               </div>
@@ -93,7 +93,7 @@
                 rest = new ClienteRest(); //aqui lleva mayuscula al ser la funcion dentro del archivo(que la he definido con mayuscula)
                 iu = new ControlWeb();
                 cws = new ClienteWS();
-                tablero = new Tablero();
+                tablero = new Tablero(10);
                 iu.comprobarCookie();
                 //iu.mostrarAgregarUsuario();
         </script>
