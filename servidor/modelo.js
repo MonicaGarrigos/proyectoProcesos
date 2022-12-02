@@ -327,16 +327,16 @@ function Tablero(size) {
 	}
 
 	this.colocarBarco = function (barco, x, y) {
-		//if (this.comprobarLimites(barco.tam, x)) {
+		if (this.comprobarLimites(barco.tam, x)) {
 			if (this.casillasLibres(x, y, barco.tam)) {
 				for (i = x; i < barco.tam + x; i++) {
 					this.casillas[i][y].contiene = barco;
 					//console.log('Revisando casillas', i, y, ':', this.casillas[i][y].contiene);
-					// console.log('Barco', barco.nombre, 'colocado en', i, y)
+					console.log('Barco', barco.nombre, 'colocado en', i, y)
 				}
 				barco.desplegado = true;
 			}
-		//}
+		}
 	}
 
 	this.comprobarLimites = function (tam, x) {
@@ -349,7 +349,7 @@ function Tablero(size) {
 	this.casillasLibres = function (x, y, tam) {
 		for (i = x; i < tam; i++) {
 			let contiene = this.casillas[i][y].contiene;
-			if (!contiene.esAgua() || this.comprobarLimites(tam,x)) {
+			if (!contiene.esAgua()) {
 				return false;
 			}
 		}

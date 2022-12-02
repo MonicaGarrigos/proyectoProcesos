@@ -88,8 +88,8 @@ function ClienteWS(){
 		});
 
         this.socket.on("barcoColocado",function(data){
-            console.log(data.colocado)
-            if (data.colocado) {
+            console.log(data.colocado.desplegado)
+            if (data.colocado.desplegado) {
                 let barco = tablero.flota[data.barco];
                 tablero.puedesColocarBarco(barco,data.x,data.y);
                 iu.mostrarModal("El barco: "+ data.barco + " se ha colocado");
