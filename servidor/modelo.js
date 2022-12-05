@@ -1,6 +1,9 @@
+let cad= require('./cad.js');
+
 function Juego() {
 	this.partidas = {};
 	this.usuarios = {}; //array asociativo
+	this.cad= new cad.Cad();
 
 	this.agregarUsuario = function (nick) {
 		let res = { "nick": -1 };
@@ -48,6 +51,9 @@ function Juego() {
 	this.crearPartida = function (usr) {
 		let codigo = Date.now();
 		console.log("Usuario " + usr.nick + " crea partida " + codigo);
+		this.cad.insertarPartida({"operacion":"crearPartida","propietario":usr.nick,"fecha":Date()},function(){
+			console.log("Insertado crearPartida");
+		});
 		this.partidas[codigo] = new Partida(codigo, usr);
 		return codigo;
 	}
@@ -87,6 +93,8 @@ function Juego() {
 	this.obtenerPartida = function (codigo) {
 		return this.partidas[codigo];
 	}
+
+	//this.cad.conectar();  Podriamos hacer la conexion al hacer el new de juego o al hacer el new de cad(nosotros en cad)
 }
 
 function Usuario(nick, juego) {
