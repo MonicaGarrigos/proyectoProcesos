@@ -1,14 +1,18 @@
 let cad= require('./cad.js');
 
-function Juego() {
+function Juego(test) {
 	this.partidas = {};
 	this.usuarios = {}; //array asociativo
 	this.cad= new cad.Cad();
+	this.test=test;
 
 	this.agregarUsuario = function (nick) {
 		let res = { "nick": -1 };
 		if (!this.usuarios[nick]) {
 			this.usuarios[nick] = new Usuario(nick, this);
+			this.cad.insertarLog({"operacion":"inicioSesion","usuario":nick,"fecha":Date()},function(){
+				console.log("Registro de log(iniciar sesion) insertado");
+			});
 			res = { "nick": nick };
 			console.log("Nuevo usuario: " + nick);
 		}
@@ -21,6 +25,9 @@ function Juego() {
 		if (this.usuarios[nick]) {
 			this.finalizarPartida(nick);
 			this.eliminarUsuario(nick);
+			this.cad.insertarLog({"operacion":"finSesion","usuario":nick,"fecha":Date()},function(){
+				console.log("Registro de log(salir) insertado");
+			});
 		}
 	}
 	this.jugadorCreaPartida = function (nick) {
@@ -51,8 +58,8 @@ function Juego() {
 	this.crearPartida = function (usr) {
 		let codigo = Date.now();
 		console.log("Usuario " + usr.nick + " crea partida " + codigo);
-		this.cad.insertarPartida({"operacion":"crearPartida","propietario":usr.nick,"fecha":Date()},function(){
-			console.log("Insertado crearPartida");
+		this.cad.insertarLog({"operacion":"crearPartida","propietario":usr.nick,"codigo":codigo,"fecha":Date()},function(){
+			console.log("Registro de log(crear partida) insertado");
 		});
 		this.partidas[codigo] = new Partida(codigo, usr);
 		return codigo;
@@ -61,6 +68,10 @@ function Juego() {
 		let res = -1;
 		if (this.partidas[codigo]) {
 			res = this.partidas[codigo].agregarJugador(usr);
+
+			this.cad.insertarLog({"operacion":"unirsePartida","usuario":usr.nick,"codigoPartida":codigo,"fecha":Date()},function(){
+				console.log("Registro de log(unirse a partida) insertado");
+			});
 		}
 		else {
 			console.log("La partida no existe");
@@ -94,7 +105,22 @@ function Juego() {
 		return this.partidas[codigo];
 	}
 
-	//this.cad.conectar();  Podriamos hacer la conexion al hacer el new de juego o al hacer el new de cad(nosotros en cad)
+	this.obtenerLogs = function(callback){
+		this.cad.obtenerLogs(callback);
+	}
+
+	this.insertarLog=function(log,callback){
+		if(!this.test){
+			this.cad.insertarLog(log,callback)
+		}
+	}
+
+	
+	if(!test){
+		this.cad.conectar(function(db){
+			console.log("Conectandose a Atlas")
+		})
+	}
 }
 
 function Usuario(nick, juego) {
@@ -188,6 +214,21 @@ function Usuario(nick, juego) {
         }
         return undefined
     }
+	this.logAbandonarPartida = function(jugador,codigo){
+		this.juego.cad.insertarLog({"operacion":"abandonarPartida","usuario":jugador.nick,"codigo":codigo,"fecha":Date()},function(){
+			console.log("Registro de log(abandonar) insertado");
+		});
+		
+
+
+	}
+	this.logFinalizarPartida = function(perdedor,ganador,codigo){
+		this.juego.cad.insertarLog({"operacion":"finalizarPartida","perdedor":perdedor,"ganador":ganador,"codigo":codigo,"fecha":Date()},function(){
+			console.log("Registro de log(finalizarPartida) insertado");
+		});
+		
+
+	}
 
 
 }
@@ -303,6 +344,7 @@ function Partida(codigo, usr) {
 			this.fase = "final";
 			console.log("Fin de la partida");
 			console.log("Ganador: " + this.turno.nick);
+			jugador.logFinalizarPartida(jugador.nick,this.turno.nick,this.codigo);
 		}
 	}
 	this.abandonarPartida = function (jugador) {
@@ -315,6 +357,10 @@ function Partida(codigo, usr) {
 			if(rival){
 			console.log("Ganador: " + rival.nick);
 			}
+			// this.jugador.juego.cad.insertarLog({"operacion":"crearPartida","propietario":usr.nick,"fecha":Date()},function(){
+			// 	console.log("Registro de log(abandonar) insertado");
+			// });
+			jugador.logAbandonarPartida(jugador,this.codigo);
 
 
 		}

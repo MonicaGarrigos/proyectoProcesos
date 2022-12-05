@@ -7,7 +7,7 @@ describe("El juego...", function() {
   var us1,us2,partida;
 
   beforeEach(function() {   //Se ejecuta antes de cada bloque it
-    miJuego=new modelo.Juego();
+    miJuego=new modelo.Juego(true);
     miJuego.agregarUsuario("pepe");
     miJuego.agregarUsuario("luis");
     let res=miJuego.jugadorCreaPartida("pepe");

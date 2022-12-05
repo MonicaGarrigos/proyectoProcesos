@@ -4,13 +4,19 @@ var ObjectID = require("mongodb").ObjectID;
 
 
 function Cad() {
-    this.partidas;
+    this.logs;
 
-    //partidas
-    this.insertarPartida = function (partida, callback) {
-        insertar(this.partidas, partida, callback);
+    //logs
+    this.insertarLog = function (registroLog, callback) {
+        insertar(this.logs, registroLog, callback);
     }
 
+    this.obtenerLogs=function(callback){
+        obtenerTodos(this.logs,callback)
+    }
+
+    //partidas
+    //usuarios
 
     function insertar(coleccion, elemento, callback) {
         coleccion.insertOne(elemento, function (err, result) {
@@ -25,6 +31,13 @@ function Cad() {
 
     }
 
+    function obtenerTodos(coleccion,callback){
+        coleccion.find().toArray(function(error,col){
+            callback(col);
+        });
+    };
+
+
 
     this.conectar = function () {
         let cad = this;
@@ -32,15 +45,15 @@ function Cad() {
         mongo.connect("mongodb+srv://batalla:batalla@cluster0.yzyhrzl.mongodb.net/?retryWrites=true&w=majority", { useUnifiedTopology: true }, function (err, database) {
             if (!err) {
                 console.log("Conectado a MongoDB Atlas");
-                database.db("batalla").collection("partidas",function(err,col){
-                if (err) {
-                    console.log("No se puede obtener la coleccion")
-                }
-                else {
-                    console.log("tenemos la colección partidas");
-                    cad.partidas =col;
-                }
-            });
+                database.db("batalla").collection("logs",function(err,col){
+                    if (err) {
+                        console.log("No se puede obtener la coleccion")
+                    }
+                    else {
+                        console.log("Tenemos la colección de logs");
+                        cad.logs =col;
+                    }
+                });
 
             }
             else {
@@ -50,7 +63,7 @@ function Cad() {
 
     }
 
-    this.conectar();
+    // this.conectar();
 
 }
 

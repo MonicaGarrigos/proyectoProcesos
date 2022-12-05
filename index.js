@@ -11,8 +11,9 @@ const io = new Server(server);
 const PORT = process.env.PORT || 3001;
 const modelo = require ("./servidor/modelo.js");
 const sWS = require("./servidor/servidorWS.js");
+var args = process.argv.slice(2);
 
-let juego = new modelo.Juego();
+let juego = new modelo.Juego(args[0]);
 let servidorWS = new sWS.ServidorWS();
 
 
@@ -76,7 +77,13 @@ app.get("/salir/:nick",function(request,response){
   juego.usuarioSale(nick);
   
   response.send({res:"ok"});
-})
+});
+
+app.get("/obtenerLogs",function(request,response){
+  juego.obtenerLogs(function(logs){
+    response.send(logs);
+  })
+});
 
 // Start the server, antes con app, ahora con sockets con server.listen
 /*app.listen(PORT, () => {
