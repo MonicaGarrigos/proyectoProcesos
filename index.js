@@ -74,9 +74,10 @@ app.get("/salir/:nick",function(request,response){
 
   let nick = request.params.nick;
 
-  juego.usuarioSale(nick);
+  cod=juego.usuarioSale(nick);
+  //console.log(cod,"index.js")
   
-  response.send({res:"ok"});
+  response.send({res:"ok",codigo:cod});
 });
 
 app.get("/obtenerLogs",function(request,response){

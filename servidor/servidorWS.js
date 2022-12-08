@@ -52,6 +52,20 @@ function ServidorWS() {
                 }
 
             });
+
+            socket.on("usuarioSale",function(nick,codigo){
+                let lista = juego.obtenerPartidasDisponibles();
+              
+                res= {jugadorS:nick} 
+                //console.log(nick)
+                //console.log(codigo)
+                if(codigo){
+                    let codigoStr =codigo.toString();              
+                    cli.enviarATodosEnPartida(io, codigoStr, "usuarioSalido", res);
+                    cli.enviarATodos(socket, "actualizarListaPartidas", lista); 
+                }
+
+            })
         
             socket.on("abandonarPartida", function (nick, codigo) {
                 let jugador = juego.obtenerUsuario(nick);
@@ -63,6 +77,8 @@ function ServidorWS() {
                     if (rival == undefined){
                         cli.enviarAlRemitente(socket, "partidaCancelada", {codigoP: codigo})
                         partida.abandonarPartida(jugador)
+                        let lista = juego.obtenerPartidasDisponibles();
+                        cli.enviarATodos(socket, "actualizarListaPartidas", lista);
                     } else {
                         let res = { codigoP: codigo, nombreA: jugador.nick, nombreG: rival.nick }                    
                         partida.abandonarPartida(jugador)

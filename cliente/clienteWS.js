@@ -11,6 +11,12 @@ function ClienteWS(){
         this.socket.emit("crearPartida",rest.nick); //Emit para enviar peticiones+una cadena y el atributo
     }
 
+    this.usuarioSale = function(nick,codigo){
+        //console.log("Entra al cliente socket")
+        //console.log(codigo,"cws")
+        this.socket.emit("usuarioSale",rest.nick,codigo)
+    }
+
     this.unirseAPartida = function(codigo){
         this.socket.emit("unirseAPartida",rest.nick,codigo);
     }
@@ -64,7 +70,9 @@ function ClienteWS(){
         });
 
         this.socket.on("actualizarListaPartidas",function(lista){
+            //console.log("Entro a actualizar")
 			if (!cli.codigo){
+                //console.log("paso el if de actualizar")
 				iu.mostrarListaDePartidasDisponibles(lista);
 			}
 		});
@@ -85,6 +93,21 @@ function ClienteWS(){
             iu.mostrarModal("Has terminado la partida " + res.codigoP + " antes de que se uniese alguien")
             iu.mostrarHome()
         });
+
+        this.socket.on("usuarioSalido",function(res){
+            console.log("Entro a usuario salido-cws")
+            console.log(rest.nick,"rest.nick-cws")
+            console.log(res.jugadorS,"res.jugadorS-cws")
+            console.log(res.jugadorS==rest.nick,"cws")
+            if(!(res.jugadorS==rest.nick)){
+                iu.mostrarModal("El usuario " + res.jugadorS + " se ha salido a mitad de la partida")
+                iu.mostrarHome()
+            }
+            else{
+                iu.mostrarModal("Te has salido a mitad de partida")
+            }
+            
+        })
 
 
         

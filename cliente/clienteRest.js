@@ -108,9 +108,12 @@ function ClienteRest(){
 
 	this.usuarioSale=function(){
 		let nick=this.nick;
-		$.getJSON("/salir/"+nick,function(){
+		
+		$.getJSON("/salir/"+nick,function(data){
 			$.removeCookie("nick");
 			iu.comprobarCookie();
+			//console.log(data.codigo,"cliente rest");
+			cws.usuarioSale(nick,data.codigo);
 		})
 	}
     

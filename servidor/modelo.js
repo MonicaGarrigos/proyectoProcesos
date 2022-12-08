@@ -23,11 +23,15 @@ function Juego(test) {
 	}
 	this.usuarioSale = function (nick) {
 		if (this.usuarios[nick]) {
-			this.finalizarPartida(nick);
+			codigo=this.finalizarPartida(nick);
+			//console.log(codigo,"modelo-usuarioSale")
 			this.eliminarUsuario(nick);
 			this.insertarLog({"operacion":"finSesion","usuario":nick,"fecha":Date()},function(){
 				console.log("Registro de log(salir) insertado");
 			});
+			if(codigo){
+				return codigo
+			}
 		}
 	}
 	this.jugadorCreaPartida = function (nick) {
@@ -89,15 +93,18 @@ function Juego(test) {
 		let lista = [];
 		for (let key in this.partidas) {
 			if (this.partidas[key].fase == "inicial") {
-				lista.push({ "codigo": key, "owner": this.partidas[key].owner.nick });
+				lista.push({ "codigo": key, "owner": this.partidas[key].owner.nick,"fase":this.partidas[key].fase });
 			}
 		}
 		return lista;
 	}
 	this.finalizarPartida = function (nick) {
+		console.log("Entro a finalizar la partida")
 		for (let key in this.partidas) {
-			if (this.partidas[key].fase == "inicial" && this.partidas[key].estoy(nick)) {
+			if ((this.partidas[key].fase == "inicial" || this.partidas[key].fase == "desplegando") && this.partidas[key].estoy(nick)) {
 				this.partidas[key].fase = "final";
+				return this.partidas[key].codigo;
+				
 			}
 		}
 	}
