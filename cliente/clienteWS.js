@@ -95,10 +95,7 @@ function ClienteWS(){
         });
 
         this.socket.on("usuarioSalido",function(res){
-            console.log("Entro a usuario salido-cws")
-            console.log(rest.nick,"rest.nick-cws")
-            console.log(res.jugadorS,"res.jugadorS-cws")
-            console.log(res.jugadorS==rest.nick,"cws")
+
             if(!(res.jugadorS==rest.nick)){
                 iu.mostrarModal("El usuario " + res.jugadorS + " se ha salido a mitad de la partida")
                 iu.mostrarHome()
